@@ -7,15 +7,21 @@
 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-# Conectar a base de datos MySQL
+
+**XSQLART** es un Framework PHP que ayuda a manejar consultas MySQL mediante PHP, escribiendo menos código.
+
+**EJEMPLOS**
+
+## Conectar a base de datos MySQL
 ```
 $dbn=new xsqlart();
 $dbn->setCodif('utf8');
 $dbn->saveSetConex(USUARIO_BD,CLAVE_BD,SERVIDOR_BD,NOMBRE_BD);
 ```
 
-# Crear una consulta simple
+## Crear una consulta simple
 ```
+$qrysentence="SELECT * FROM tabla";
 if($dbn->Execute($qrysentence)){
 	if($dbn->getRows()>0){
 		$data=$dbn->getData();
@@ -26,11 +32,13 @@ if($dbn->Execute($qrysentence)){
 }
 ```
 
-# Crear una consulta y extraer un array de datos
+## Crear una consulta y extraer un array de datos
 ```
+$qrysentence="SELECT * FROM tabla";
 if($dbn->Execute($qrysentence)){
 	if($dbn->getRows()>0){
 		while($data=$dbn->getData()){
+			$field=$data['fieldname'];
 			//escribir codigo aqui
 		}
 	}
