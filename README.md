@@ -8,9 +8,9 @@
 */
 
 
-**XSQLART** es un Framework PHP que ayuda a manejar consultas MySQL mediante PHP, escribiendo menos código.
+# **XSQLART** es un Framework PHP que ayuda a manejar consultas MySQL mediante PHP, escribiendo menos código.
 
-**EJEMPLOS**
+# EJEMPLOS
 
 ## Conectar a base de datos MySQL
 ```
