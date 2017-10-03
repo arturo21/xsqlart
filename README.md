@@ -1,5 +1,7 @@
 # xSQLART
-#### es un Framework PHP que ayuda a manejar consultas MySQL mediante PHP, escribiendo menos código.
+#### Framework PHP que ayuda a manejar consultas MySQL mediante PHP, escribiendo menos código,
+
+#### pudiendo *reutilizarlo* más fácilmente.
 
 /*
 	Copyright (c) 2017 Arturo Vásquez Soluciones de Sistemas 2716
