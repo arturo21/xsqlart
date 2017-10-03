@@ -1,0 +1,40 @@
+/* RELEASE NOTES
+ * CHANGELOG
+ * 1. FIXED FUNCION SetConex
+ * 1. FIXED FUNCION SetConex (FIXED: validations DB selection)
+ * 2. FIXED FUNCION Execute (FIXED: muestra si hay error en la consulta MySQL y escribe en un archivo de operaciones...)
+ * 2. FIXED FUNCION Execute (FIXED: SOLO extrae filas si hay un SELECT en el QUERY)
+ * 2. FIXED FUNCION Execute (FIXED: getRows)
+ * 2. FIXED FUNCION Execute (FIXED: functions within Execute)
+ * 2. FIXED FUNCION Execute (FIXED: MANEJA MAS DE UNA COSULTA anidada SIN INSTANCIAR UN NUEVO OBJETO:: SINGLETON)
+ * 2. FIXED FUNCION Execute (FIXED: Reload no devuelve el socket, no hace falta asignarse a una variable)
+ * 3. ADDED FUNCION WHERE Y LIKE CON EXPRESIONES REGULARES
+ * 4. FIXED SINGLETON:: (Se comporta como tal pero no tiene el constructor...).
+ * 5. FIXED ADDED soporte UTF8 para impresión o muesttra de datos
+ * 6. FIXED ADDED Colectores de datos (Probados y funcionando :))
+ * 7. FIXED ADDED Importacion de datos a MySQL mediante archivos CSV de excel
+ * 8. FIXED ADDED Exportacion de BD MySQL Actual y una que sea especificada por el programador
+ * 9. ADDED funciones de Fechas y conversion de fechas a Integer
+ * 10. ADDED funcion de ExportCSV para exportar archivos a CSV
+ * 11. ADDED funcion para ver el numero de campos de una tabla
+ * 12. ADDED libreria seguridad.class.php (INCLUDED)
+ * 13. DEPRECATED ConnectarBD_SC, ConectarBD
+ * 14. FIXED Funciones para mostrar mensajes de error
+ * 15. ADDED Funcion Historial LOG de errores
+ * 16. ADDED Funciones varias, mejora en funcion Execute
+ * 16. ADDED Funcion saveSettings, mejora en funcion Execute
+ * 16. ADDED Funcion Reload, mejora en funcion Execute
+ * 16. ADDED Funcion setConexSocket, mejora en funcion Execute
+ * 16. ADDED Funcion encbase64, decbase64. Soporte para base64
+ * 17. ADDED Cambio de sintaxis al invocar cada función, por modificacion de "return 0;" por "return;" para rapidez en codificacion
+ * 18. FIXED ExportSQL Cambio de algoritmo
+ * 19. DEPRECATED ExportSQL_dif
+ * 20. ADDED Array de consultas y Array de filas 
+ * 21. FIXED Funcion setConex
+ * 23. FIXED CHANGED ImportCSV Cambio de algoritmo
+ * 23. FIXED CHANGED Hacer referencia a funciones internas para reutilizar código
+ * 24. INTEGRATED API para escritura de errores mediante archivo LOG (seguridad.class.php)
+ * 25. ADDED HASH Support
+ * 26. BUGFIX iteración infinita al realizar select dentro de un while - agregando array de numeros de filas y consultas realizadas
+ * 27. ADDED Funcion saveSetConex (Guarda los datos y conecta. en euna sola línea)
+*/
