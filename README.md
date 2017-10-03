@@ -53,10 +53,22 @@ if($dbn->Execute($qrysentence)){
 $dbn->emailSend($sender,$subject,$message,$destino);
 ```
 
-## Generar HASH por una cantidad de caracteres determinada
+## Generar cadena de caracteres pseudoaleatorios de una longitud determinada
 ```
 $cantchar="128";
-$dbn->genHash($cantchar);
+$cadena=$dbn->genHash($cantchar);
+```
+
+## Generar HASH SHA512
+```
+$cantchar="sdfsdfsdfsdfsdfsdf";
+$dbn->hashcad($cantchar);
+```
+
+## Generar HASH según algoritmo indicado
+```
+$cantchar="asdasdasdasdasdasdasdasdasd";
+$dbn->hashcadalgo($cantchar,"SHA512");
 ```
 
 ## Exportar archivo SQL de base de datos
