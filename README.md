@@ -47,3 +47,27 @@ if($dbn->Execute($qrysentence)){
 	}
 }
 ```
+
+## Enviar un correo con formato HTML
+```
+$dbn->emailSend($sender,$subject,$message,$destino);
+```
+
+## Generar HASH por una cantidad de caracteres determinada
+```
+$cantchar="128";
+$dbn->genHash($cantchar);
+```
+
+## Exportar archivo SQL de base de datos
+```
+$bd="prueba";
+$dbn->ExportarSQL($bd);
+```
+
+## Exportar archivo CSV de base de datos por tabla
+```
+$archivosalida="tablaprueba.csv";
+$sql="SELECT * FROM tabla"
+$dbn->ExportCSV($archivosalida,$sql);
+```
