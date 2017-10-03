@@ -8,13 +8,14 @@
 */
 
 # Conectar a base de datos MySQL
-`<addr>`
+```
 $dbn=new xsqlart();
 $dbn->setCodif('utf8');
 $dbn->saveSetConex(USUARIO_BD,CLAVE_BD,SERVIDOR_BD,NOMBRE_BD);
-`</addr>`
+```
 
 # Crear una consulta simple
+```
 if($dbn->Execute($qrysentence)){
 	if($dbn->getRows()>0){
 		$data=$dbn->getData();
@@ -23,8 +24,10 @@ if($dbn->Execute($qrysentence)){
 		return "No hay datos registrados.";
 	}
 }
+```
 
 # Crear una consulta y extraer un array de datos
+```
 if($dbn->Execute($qrysentence)){
 	if($dbn->getRows()>0){
 		while($data=$dbn->getData()){
@@ -35,3 +38,4 @@ if($dbn->Execute($qrysentence)){
 		return "No hay datos registrados.";
 	}
 }
+```
