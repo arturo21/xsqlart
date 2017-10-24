@@ -901,14 +901,37 @@ class xsqlart{
 		}
 		return $this->nderror;
 	}
+	public function formatH($cadena,$formato){
+		switch($formato){
+			case '1':
+				return "<h1>".$cadena."</h1>";
+				break;
+			case '2':
+				return "<h2>".$cadena."</h2>";
+				break;
+			case '3':
+				return "<h3>".$cadena."</h3>";
+				break;
+			case '4':
+				return "<h4>".$cadena."</h4>";
+				break;
+			case '5':
+				return "<h5>".$cadena."</h5>";
+				break;
+			case '6':
+				return "<h6>".$cadena."</h6>";
+				break;
+		}
+		return;
+	}
 	public function showError(){
 		if($this->lastcons!=''){
-			$error="<h3>".$this->getError()."</h3>";
-			$this->printCad($error);
+			$cadena="<h3>".$this->getError()."</h3>";
+			$this->printCad($this->formatH($cadena,"3"));
 		}
 		else{
-			$error="<h3>".$this->getError()."</h3>";
-			$this->printCad($error);
+			$cadena="<h3>".$this->getError()."</h3>";
+			$this->printCad($this->formatH($cadena,"3"));
 		}
 		return;
 	}
