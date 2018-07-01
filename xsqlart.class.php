@@ -132,6 +132,10 @@ class xsqlart{
 	protected $prefijoclv;
 	protected $constantes;
 	protected $version;
+	////////////////////////////SQL PREPARADAS///////////////////////
+	protected $sqlprepared;
+	protected $sqlpreparedind=0;
+	protected $sqlprepared_arr=array();
 	//Función para conectar a BD/////////////////////////////////////
 	////////////////////////////////////////////////////////////////
 	public function setPHPVersion($phpv){
@@ -723,6 +727,9 @@ class xsqlart{
 		else {
 			return -1;
 		}
+	}
+	public function prepare($query){
+		$this->setLastQueryStatement($query);
 	}
 	public function Execute($query){
 		$this->appendOperMsg("Iniciando conexion a la Bd...");
