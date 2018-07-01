@@ -1,7 +1,10 @@
 # xSQLART
+# Compatible con PHP > 5.0
 #### Framework PHP que ayuda a manejar consultas MySQL, escribiendo menos código,
 
-#### pudiendo *reutilizarlo* más fácilmente.
+#### Reutilizando el código con sólo COPIAR y PEGAR.
+
+#### Haz más con menos.
 
 /*
 	Copyright (c) 2017 Arturo Vásquez Soluciones de Sistemas 2716
