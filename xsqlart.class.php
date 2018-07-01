@@ -730,7 +730,14 @@ class xsqlart{
 	}
 	public function prepare($query){
 		$this->setLastQueryStatement($query);
+		return 0;
 	}
+	////SHORTCUTS
+	public function execute($query){
+		$this->Execute($query);
+		return 0;
+	}
+	/////////////////
 	public function Execute($query){
 		$this->appendOperMsg("Iniciando conexion a la Bd...");
 		//Reinicia Conexion y ejecuta sentencia SQL
