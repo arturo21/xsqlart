@@ -946,7 +946,7 @@ class xsqlart{
 	 * 																			  *
 	 * 																			  *
 	 * ***************************************************************************/
-	//Envia email sin formato + Attachments
+	//Envia email con/sin formato + Attachments
 	public function MailSend($sender,$subject,$message,$destino,$formato){
 		//SEND EMAIL HTML ISO ENCODING
 		//Con codificacion UTF8
@@ -1146,10 +1146,10 @@ class xsqlart{
 			return;
 		}
 		//DEVUELVE UN ARRAY CON LOS CAMPOS DE LA TABLA INDICADA
-		public function getDataFields(){
+		public function getDataFields($table){
 			$conn=$this->getIDConn();
 			if($conn){
-				$sql='SHOW COLUMNS FROM table_name';
+				$sql='SHOW COLUMNS FROM '.$table;
 				$this->Execute($sql);
 				$data=$res->getAllData();
 				echo(json_encode($data));
@@ -1217,49 +1217,7 @@ class xsqlart{
 			$this->printCad($data);
 			return;		
 		}
-		public function getAllDataFields(){
-			$datos=array();
-			$limite=$this->limitesql;
-			$conn=$this->conexion;
-			if($conn){
-				$tablai=$this->tabla;
-				$numargs = func_num_args();
-			    $argulist = func_get_args();
-			    $query="SELECT ";
-			    
-			    if($argulist[0]!='*'){
-				    for($i=0;$i<$numargs;$i++){
-				    	if($i!=($numargs-1)){
-				    		$query.=$argulist[$i].", ";
-				    	}
-				    	else{
-				    		$query.=$argulist[$i];
-				    	}
-				    }
-			    }
-			    else{
-			    	$query.="* ";
-			    }
-			    
-			    if($this->wheresql1!='' && $this->relasql!='' && $this->wheresql2!=''){
-			    	$query.=" FROM ".$tablai." WHERE ".$this->wheresql1.$this->relasql.$this->wheresql2;
-			    }
-			    else{
-			    	$query.=" FROM ".$tablai;
-			    }
-		    
-				if($limite!=''){
-			    	$query.=" LIMIT ".$limite;
-			    }
-		    	
-				if($this->Execute($query)){
-					return;
-				}
-				else{
-					reuturn -1;
-				}
-			}
-		}
+		
 	/****************************************************************************************************
 	 * 																									*
 	 * 																									*
