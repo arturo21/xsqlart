@@ -44,6 +44,7 @@
  * 25. ADDED HASH Support
  * 26. BUGFIX iteración infinita al realizar select dentro de un while - agregando array de numeros de filas y consultas realizadas
  * 27. ADDED Funcion saveSetConex (Guarda los datos y conecta. en euna sola línea)
+ * 28 PHP 7 compatibility;
 */
 error_reporting("E_ERROR");
 define("XSQLART_OPERATIONS_FILE", "operations.log");
@@ -108,6 +109,7 @@ class xsqlart{
 	protected $mesString;
 	protected $diaString;
 	protected $dateString;
+	protected $phpversion;
 	protected $archivosmail=array();
 	protected $archivosmail_t=array();
 	protected $archivosmail_s=array();
@@ -129,8 +131,13 @@ class xsqlart{
 	protected $fileauth;
 	protected $prefijoclv;
 	protected $constantes;
+	protected $version;
 	//Función para conectar a BD/////////////////////////////////////
-	//////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+	public function setPHPVersion($phpv){
+		$this->phpversion=$phpv;
+		return;
+	}
 	public function setDB($db){
 		$this->db=$db;
 		return;		
@@ -155,6 +162,19 @@ class xsqlart{
 	public function setClaveUsuario($claveusr){
 		$this->contbd=$claveusr;
 		return;
+	}
+	public function getPhpVersion(){
+		$ver = (float)phpversion();
+		echo("VERSION PHP ".$ver);
+		if ($ver >= 7.0) {
+		    return 7;
+		}
+		elseif ($ver >=5.0 && $ver < 7.0) {
+		    return 5;
+		}
+		else{
+		    return $ver;
+		}
 	}
 	public function getTable(){
 		return $this->tabla;
@@ -249,7 +269,12 @@ class xsqlart{
 	}
 	public function setConexSocket($socket){
 		$tmp=$socket;
-		$this->conexion=$tmp;
+		if(!$tmp){
+			echo("ERROR, no pudo conectarse a la base de datos");
+		}
+		else{
+			$this->conexion=$tmp;
+		}
 		return 0; 
 	}
 	public function setConex(){
@@ -278,8 +303,7 @@ class xsqlart{
 		else {
 			$server=$this->getServer();
 		}
-		$this->setConexSocket(mysql_connect($server,$usuario,$clave));
-		mysql_select_db($bd);
+		$this->setConexSocket(mysqli_connect($server,$usuario,$clave,$bd));
 	}
 	public function closeConn(){
 		if($this->getIDConn()!=-1){
@@ -290,7 +314,7 @@ class xsqlart{
 	}
 	public function closeConnID($ID){
 		if($ID!=''){
-			mysql_close($ID);
+			mysqli_close($ID);
 		}
 		else{
 			return -1;
@@ -298,6 +322,9 @@ class xsqlart{
 	}
 	public function getConexSocket(){
 		return $this->conexion;
+	}
+	public function getSocket(){
+		return $this->getConexSocket();
 	}
 	public function showConexSocket(){
 		if($this->conexion!=''){
@@ -631,16 +658,11 @@ class xsqlart{
 		}
 		return $strwhere;
 	}
-	public function setIDConn($connlink){
-		$this->conexion=$connlink;
+	public function setIDConn(){
+		$this->conexion=$this->getSocket();
 	}
 	public function getIDConn(){
-		if($this->conexion!=''){
-			return $this->conexion;
-		}
-		else {
-			return -1;
-		}
+		return $this->getSocket();
 	}
 	public function setIDInsert($id){
 		$this->idinsert=$id;
@@ -727,15 +749,17 @@ class xsqlart{
 	}
 	public function getSQLResult(){
 		//para cuando hay resultado unico
-		return json_encode(mysql_result($this->getLastQuery()));
+		return json_encode($this->getLastQuery());
 	}
-	public function getSQLResultZero(){
+	public function getResultLengths(){
 		//para cuando hay resultado unico
-		return json_encode(mysql_result($this->getLastQuery(),0));
-	}
-	public function getSQLResultRow($fila){
-		//Para cuando se quiere un resultado de la fila N
-		return mysql_result($this->getLastQuery(),$fila);
+		$result=$this->getLastQuery();
+		if($result){
+			return $result->lengths;
+		}
+		else {
+			return -1;
+		}
 	}
 	public function Execute($query){
 		$this->appendOperMsg("Iniciando conexion a la Bd...");
@@ -752,7 +776,7 @@ class xsqlart{
 			else{
 				$query=$this->getLastQueryStatement();
 			}
-			$this->queryarray[$this->querycont]=mysql_query($query,$conn);
+			$this->queryarray[$this->querycont]=mysqli_query($conn,$query);
 			$this->setLastQuery($this->queryarray[$this->querycont]);
 			if($this->getLastQuery()!=''){
 				if($this->getLastQueryStatement()!=''){
@@ -760,7 +784,8 @@ class xsqlart{
 					$this->appendOperMsg("Consulta Realizada: ".$this->getLastQueryStatement(),"DB","root");
 					$consfinal=trim($consarr[0]);
 					if($consfinal=='INSERT'){
-						$this->setIDInsert(mysql_insert_id());
+						$pedido=$this->getLastQuery();
+						$this->setIDInsert($pedido->insert_id);
 						$this->appendOperMsg("Se ha hecho un Insert. ID=".$this->getIDInsert(),"DB","root");
 					}
 					else{
@@ -769,7 +794,7 @@ class xsqlart{
 							$this->appendOperMsg("Se ha hecho un SELECT. Filas obtenidas=".$this->getRows(),"DB","root");
 						}
 					}
-					if($this->setError(mysql_error())){
+					if($this->setError(mysqli_error())){
 						$this->printCad($this->getError());
 						$this->appendOperMsg("Error Consulta ".$this->getError(),"DB","root");
 						return -10;
@@ -784,7 +809,8 @@ class xsqlart{
 					$this->appendOperMsg("Consulta Realizada: ".$this->getLastQueryStatement(),"DB","root");
 					$consfinal=trim($consarr[0]);
 					if($consfinal=='INSERT'){
-						$this->setIDInsert(mysql_insert_id());
+						$pedido=$this->getLastQuery();
+						$this->setIDInsert($pedido->insert_id);
 						$this->appendOperMsg("Se ha hecho un Insert. ID=".$this->getIDInsert(),"DB","root");
 					}
 					else{
@@ -793,7 +819,7 @@ class xsqlart{
 							$this->appendOperMsg("Se ha hecho un SELECT. Filas obtenidas=".$this->getRows(),"DB","root");
 						}
 					}
-					if($this->setError(mysql_error())){
+					if($this->setError(mysqli_error())){
 						$this->appendOperMsg("Error Consulta ".$this->getError(),"DB","root");
 						$this->printCad($this->getError());
 						return -11;
@@ -803,7 +829,7 @@ class xsqlart{
 					}
 					return;
 				}
-				if($this->setError(mysql_error())){
+				if($this->setError(mysqli_error())){
 					$this->printCad($this->getError());
 					$this->appendOperMsg("Error Consulta ".$this->getError(),"DB","root");
 					return -12;
@@ -816,7 +842,7 @@ class xsqlart{
 				return;
 			}
 			else{
-				if($this->setError(mysql_error())){
+				if($this->setError(mysqli_error())){
 					$this->appendOperMsg("Error Consulta ".$this->getError(),"DB","root");
 					$this->printCad($this->getError());
 					return -13;
@@ -825,7 +851,7 @@ class xsqlart{
 					return;
 				}
 			}
-			if($this->setError(mysql_error())){
+			if($this->setError(mysqli_error())){
 				$this->appendOperMsg("Error Consulta ".$this->getError(),"DB","root");
 				$this->printCad($this->getError());
 				return -14;
@@ -835,7 +861,7 @@ class xsqlart{
 			}
 		}
 		else{
-			if($this->setError(mysql_error())){
+			if($this->setError(mysqli_error())){
 				$this->appendOperMsg("Error Consulta ".$this->getError(),"DB","root");
 				$this->printCad("ERROR DE CONEXION ".$this->getError());
 				return -15;
@@ -844,7 +870,7 @@ class xsqlart{
 				return;
 			}
 		}
-		if($this->setError(mysql_error())){
+		if($this->setError(mysqli_error())){
 			$this->appendOperMsg("Error Consulta ".$this->getError(),"DB","root");
 			$this->printCad($this->getError());
 			return -16;
@@ -854,17 +880,17 @@ class xsqlart{
 		}
 	}
 	public function getRows(){
-		$pedidoe=$this->getLastQuery();
-		if($pedidoe){
-			$filas=mysql_num_rows($pedidoe);
+		$result=$this->getLastQuery();
+		if($result){
+			$filas=$result->num_rows;
 			$this->updateNumRows($filas);
 			return $filas;
 		}
-		elseif(!$pedidoe){
+		elseif(!$result){
 			return $this->rowarray[$this->rowcont];
 		}
 		else{
-			return -2;
+			return -1;
 		}
 	}
 
@@ -936,26 +962,21 @@ class xsqlart{
 		return;
 	}
 	public function deUtf8($mensaje){
-		if($this->codifica!=''){
-			if($this->codifica=='utf8' || $this->codifica=='UTF8'){
-				$msjcod=utf8_decode($mensaje);
-			}
+		if($mensaje!=''){
+			$msjcod=utf8_decode($mensaje);
 		}
 		else{
-			$msjcod=$mensaje;
+			return -1;
 		}
 		return $msjcod;
 	}
 	public function enUtf8($mensaje){
-		if($this->codifica!=''){
-			if($this->codifica=='utf8' || $this->codifica=='UTF8'){
-				$msjcod=utf8_encode($mensaje);
-			}
+		if($mensaje!=''){
+			$msjcod=utf8_encode($mensaje);
 		}
 		else{
-			$msjcod=$mensaje;
+			return -1;
 		}
-		
 		return $msjcod;
 	}
 	/******************************************************************************
@@ -1122,29 +1143,25 @@ class xsqlart{
 		}
 		//GET DB DATA
 		public function getData(){
-			if($this->getLastQuery()){
+			$result=$this->getLastQuery();
+			if($result){
 				if($this->getRows()>0){
-					$data=mysql_fetch_array($this->getLastQuery());
+					$data=$result->fetch_array(MYSQLI_BOTH);
 					return $data;
 				}
 				else{
 					return "NO DATA FOUND";
 				}
 			}
-			elseif(!$this->getLastQuery()){
-				return $this->rowarray[$this->rowcont];
-			}
 			else{
-				return -2;
+				return -1;
 			}
 		}
 		public function getAllData(){
 			$arrayresult=array();
 			$pedido=$this->getLastQuery();
 			if($pedido){
-				while($datasd=$this->getData()){
-					$arrayresult[]=$datasd;
-				}
+				$arrayresult=$pedido->fetch_all(MYSQLI_BOTH);
 				return $arrayresult;		
 			}
 			else{
@@ -1152,8 +1169,14 @@ class xsqlart{
 			}
 		}
 		public function getDataNumFields(){
-			$data=mysql_num_fields($this->getLastQuery());
-			return $data;
+			$result=$this->getLastQuery();
+			if($result){
+				$data=$result->field_count;
+				return $data;
+			}
+			else {
+				return -1;
+			}
 		}
 		function arrayShow($var){
 			print_r($var);
@@ -1191,43 +1214,43 @@ class xsqlart{
 		    	}
 		    	
 				if($query!=''){
-					$this->lastped=mysql_query($query,$conn);
+					$this->lastped=mysqli_query($conn,$query);
 				}
 				else{
-					$this->lastped=mysql_query($this->lastcons,$conn);
+					$this->lastped=mysqli_query($this->lastcons,$conn);
 				}
 				
 				if($this->lastped){
 					if($query!=''){
 						$this->lastcons=$query;
-						$this->rowarray[$this->rowcont]=mysql_num_rows($this->lastped);
+						$this->rowarray[$this->rowcont]=mysqli_num_rows($this->lastped);
 							
 						$consarr=explode(' ',$query);
 						
 						if($consarr[0]=='INSERT'){
-							$idins=mysql_insert_id();
+							$idins=mysqli_insert_id();
 							$this->idinsert=$idins;
 						}
 						
-						$data=mysql_fetch_array($this->lastped);
+						$data=mysqli_fetch_array($this->lastped);
 						return $data;	
 					}
 					else{
 						$query=$this->lastcons;
-						$this->rowarray[$this->rowcont]=mysql_num_rows($this->lastped);
+						$this->rowarray[$this->rowcont]=mysqli_num_rows($this->lastped);
 						
 						$consarr=explode(' ',$query);
 						
 						if($consarr[0]=='INSERT'){
-							$idins=mysql_insert_id();
+							$idins=mysqli_insert_id();
 							$this->idinsert=$idins;
 						}
-						$data=mysql_fetch_array($this->lastped);
+						$data=mysqli_fetch_array($this->lastped);
 						return $data;				
 					}
 				}
 				else{
-					$error="<h3>".mysql_error()."</h3>";
+					$error="<h3>".mysqli_error()."</h3>";
 					return $error;
 				}
 			}
@@ -1398,8 +1421,8 @@ class xsqlart{
 				}
 				$csvcontent = fread($file,$size);
 				fclose($file);
-				//$con = @mysql_connect($databasehost,$databaseusername,$databasepassword) or die(mysql_error());
-				@mysql_select_db($databasename) or die(mysql_error());
+				//$con = @mysqli_connect($databasehost,$databaseusername,$databasepassword) or die(mysqli_error());
+				@mysqli_select_db($databasename) or die(mysqli_error());
 				$lines=0;
 				$queries="";
 				$linearray = array();
@@ -1421,9 +1444,9 @@ class xsqlart{
 				        	$query="INSERT INTO $databasetable values('$linemysql');";
 				        }
 				        $queries.=$query."\n";			
-				        @mysql_query($query);
+				        @mysqli_query($query);
 				}
-				//@mysql_close($con);
+				//@mysqli_close($con);
 				if($save){
 			        if(!is_writable($outputfile)){
 		                echo("File is not writable, check permissions.\n");
@@ -1459,7 +1482,7 @@ class xsqlart{
 					 
 					    for ($i = 0; $i < $fields_cnt; $i++){
 					        $l = $csv_enclosed . str_replace($csv_enclosed, $csv_escaped . $csv_enclosed,
-					            stripslashes(mysql_field_name($this->lastped, $i))) . $csv_enclosed;
+					            stripslashes(mysqli_field_name($this->lastped, $i))) . $csv_enclosed;
 					        $schema_insert .= $l;
 					        $schema_insert .= $csv_separator;
 					    } // end for
@@ -1512,12 +1535,12 @@ class xsqlart{
 		}
 		public function ExportarSQL($bd){
 			$link = $this->conexion;
-			mysql_select_db($bd,$link);
+			mysqli_select_db($bd,$link);
 			//get all of the tables
 			if($tables=='*'){
 				$tables = array();
-				$result = mysql_query('SHOW TABLES');
-				while($row = mysql_fetch_row($result)){
+				$result = mysqli_query('SHOW TABLES');
+				while($row = mysqli_fetch_row($result)){
 					$tables[] = $row[0];
 				}
 			}
@@ -1526,13 +1549,13 @@ class xsqlart{
 			}
 			//cycle through
 			foreach($tables as $table){
-				$result = mysql_query('SELECT * FROM '.$table);
-				$num_fields = mysql_num_fields($result);
+				$result = mysqli_query('SELECT * FROM '.$table);
+				$num_fields = mysqli_num_fields($result);
 				$return.= 'DROP TABLE '.$table.';';
-				$row2 = mysql_fetch_row(mysql_query('SHOW CREATE TABLE '.$table));
+				$row2 = mysqli_fetch_row(mysqli_query('SHOW CREATE TABLE '.$table));
 				$return.= "\n\n".$row2[1].";\n\n";
 				for ($i = 0; $i < $num_fields; $i++){
-					while($row = mysql_fetch_row($result)){
+					while($row = mysqli_fetch_row($result)){
 					$return.= 'INSERT INTO '.$table.' VALUES(';
 						for($j=0; $j<$num_fields; $j++){
 							$row[$j] = addslashes($row[$j]);
@@ -1551,13 +1574,13 @@ class xsqlart{
 			fclose($handle);
 		}
 		public function ExportarSQL_dif($host,$user,$pass,$bd,$link){
-			$link = mysql_connect($host,$user,$pass);
-			mysql_select_db($bd,$link);
+			$link = mysqli_connect($host,$user,$pass);
+			mysqli_select_db($bd,$link);
 			//get all of the tables
 			if($tables=='*'){
 				$tables = array();
-				$result = mysql_query('SHOW TABLES');
-				while($row = mysql_fetch_row($result)){
+				$result = mysqli_query('SHOW TABLES');
+				while($row = mysqli_fetch_row($result)){
 					$tables[] = $row[0];
 				}
 			}
@@ -1566,13 +1589,13 @@ class xsqlart{
 			}
 			//cycle through
 			foreach($tables as $table){
-				$result = mysql_query('SELECT * FROM '.$table);
-				$num_fields = mysql_num_fields($result);
+				$result = mysqli_query('SELECT * FROM '.$table);
+				$num_fields = mysqli_num_fields($result);
 				$return.= 'DROP TABLE '.$table.';';
-				$row2 = mysql_fetch_row(mysql_query('SHOW CREATE TABLE '.$table));
+				$row2 = mysqli_fetch_row(mysqli_query('SHOW CREATE TABLE '.$table));
 				$return.= "\n\n".$row2[1].";\n\n";
 				for ($i = 0; $i < $num_fields; $i++){
-					while($row = mysql_fetch_row($result)){
+					while($row = mysqli_fetch_row($result)){
 					$return.= 'INSERT INTO '.$table.' VALUES(';
 						for($j=0; $j<$num_fields; $j++){
 							$row[$j] = addslashes($row[$j]);
@@ -1609,7 +1632,7 @@ class xsqlart{
 		$conn=$this->getIDConn();
 		if($conn){
 			$consulta=$this->lastcons;		
-			$pedido=mysql_query($consulta,$conn);
+			$pedido=mysqli_query($consulta,$conn);
 			if($pedido!=''){
 				//obtener numero de argumentos
 			    $numargs = func_num_args();
@@ -1643,10 +1666,10 @@ class xsqlart{
 			    }
 
 				$this->lastped=$pedido;
-				$filas=mysql_num_rows($pedido);
+				$filas=mysqli_num_rows($pedido);
 				if($filas>0){
 					$this->printCad("<tbody>");
-					while($datanop=mysql_fetch_array($pedido)){
+					while($datanop=mysqli_fetch_array($pedido)){
 						$this->datares[]=$datanop;
 					}
 					
@@ -1672,7 +1695,7 @@ class xsqlart{
 				}
 			}
 			else{
-				$this->printCad(mysql_error());
+				$this->printCad(mysqli_error());
 			}
 		}
 		else{
@@ -1841,9 +1864,9 @@ class xsqlart{
 		$nivadm=$this->niveladmin;
 		$nivusr=$this->nivelusuario;
 		$sel="SELECT * FROM ".$tablogin." WHERE ".$camponom."='".$usuariovl."' AND ".$clavenom."='".$this->hashcadalgo($cifrado,$clavevl)."'";
-		$pedido=mysql_query($sel,$conn);
+		$pedido=mysqli_query($sel,$conn);
 		if($pedido){
-			$filas=mysql_num_rows($pedido);
+			$filas=mysqli_num_rows($pedido);
 			if($filas>0){
 				$_SESSION['usuarioMD5']=$usuariovl;
 			}
@@ -1876,7 +1899,7 @@ class xsqlart{
 			if($charset!=''){
 				if($collate!=''){
 					$q="CREATE DATABASE ".$bd." CHARACTER SET '".$charset."' COLLATE '".$collate."'";
-					$pedido=mysql_query($q,$conn);
+					$pedido=mysqli_query($q,$conn);
 					if($pedido){
 						return;
 					}
@@ -1998,21 +2021,21 @@ class xsqlart{
 			$query="SELECT * FROM ".$tabla;
 			
 			if($query!=''){
-				$pedaux=mysql_query($query,$conn);
+				$pedaux=mysqli_query($conn,$query);
 			}
 			else{
-				$pedaux=mysql_query($this->lastcons,$conn);
+				$pedaux=mysqli_query($conn,$this->lastcons);
 			}
 			
 			if($pedaux){
 				if($query!=''){
 					$this->lastcons=$query;
-					$this->rowarray[$this->rowcont]=mysql_num_rows($pedaux);
-					$numfields=mysql_num_fields($pedaux);
+					$this->rowarray[$this->rowcont]=mysqli_num_rows($pedaux);
+					$numfields=mysqli_num_fields($pedaux);
 
 					
 					for($i=0;$i<$numfields;$i++){
-						$fieldsa[]=mysql_field_name($pedaux,$i);
+						$fieldsa[]=mysqli_field_name($pedaux,$i);
 					}
 					for($i=0;$i<$numfields;$i++){
 						if($campo==$fieldsa[$i]){
@@ -2030,12 +2053,12 @@ class xsqlart{
 				}
 				else{
 					$this->lastcons=$query;
-					$this->rowarray[$this->rowcont]=mysql_num_rows($pedaux);
-					$numfields=mysql_num_fields($pedaux);
+					$this->rowarray[$this->rowcont]=mysqli_num_rows($pedaux);
+					$numfields=mysqli_num_fields($pedaux);
 
 					
 					for($i=0;$i<$numfields;$i++){
-						$fieldsa[]=mysql_field_name($pedaux,$i);
+						$fieldsa[]=mysqli_field_name($pedaux,$i);
 					}
 					
 					for($i=0;$i<$numfields;$i++){
@@ -2054,7 +2077,7 @@ class xsqlart{
 				}
 			}
 			else{
-				$error="<h3>".mysql_error()."</h3>";
+				$error="<h3>".mysqli_error()."</h3>";
 				return $error;
 			}
 		}
@@ -2173,7 +2196,7 @@ class xsqlart{
 		$resd=$this->hashcadalgo($algor,$cadena);
 		return $resd;
 	}
-	public function cnvIdentidadHTML($cadena){ 
+	public function cnvIdentityHTML($cadena){ 
         return str_replace(array("á","é","í","ó","ú","ñ","Á","É","Í","Ó","Ú","Ñ"),array("&aacute;","&eacute;","&iacute;","&oacute;","&uacute;","&ntilde;","&Aacute;","&Eacute;","&Iacute;","&Oacute;","&Uacute;","&Ntilde;"), $cadena);     
     }
 	public function genID(){
