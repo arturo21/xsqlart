@@ -947,21 +947,57 @@ class xsqlart{
 	 * 																			  *
 	 * ***************************************************************************/
 	//Envia email sin formato + Attachments
-	public function emailSend($sender,$subject,$message,$destino){
+	public function MailSend($sender,$subject,$message,$destino,$formato){
+		//SEND EMAIL HTML ISO ENCODING
+		//Con codificacion UTF8
 		//dirección del remitente
-		$headers .= "From: ".$sender."\r\n";
-		//dirección de respuesta, si queremos que sea distinta que la del remitente
-		$headers .= "Reply-To: ".$sender."\r\n";
-		$message=$this->deUtf8($message);
-		if(mail($destino,$subject,$message,$headers)){
-			$error="";
-			$this->setErrorZero();
-			return;
-		} 
-		else{
-			$error="No envio el email";
-			$this->setError($error);
-			return -1;
+		//para el envío en formato HTML
+		if($formato!='none' || $formato!=''){
+			$eol="\r\n";
+		    $semi_rand=md5(time());
+		    $mime_boundary = "==Multipart_Boundary_a{$semi_rand}a";
+			//headers 
+			$headers.="From: ".$sender."\r\n";
+		    $headers.="MIME-Version: 1.0".$eol;
+		    $headers.="Content-Type: multipart/mixed; boundary=\"".$mime_boundary."\"".$eol;
+		    $headers.="Content-Transfer-Encoding: 7bit".$eol;
+		    $headers.="This is a MIME encoded message.".$eol;
+			$headers.="Content-Type: text/plain; charset=\"iso-8859-1\"".$eol;
+			$headers.="Reply-To: ".$sender.$eol;
+			$headers.='X-Mailer: PHP/' . phpversion();
+			$adjuntos=$this->uploadFilesToMail();
+		    //message
+			$message=$this->deUtf8($message).$eol;
+			$message.=$adjuntos;
+			if(mail($destino,$subject,$message,$headers)){
+				$msg="Mail Enviado!!";
+				$this->setErrorZero();
+				$this->printCad($msg);
+				return;
+			} 
+			else{
+				$error="Ocurrió un error al enviar mail. Vuelva a intentarlo...";
+				$this->setError($error);
+				$this->showError($error);
+				return -1;
+			}
+		}
+		else {
+			//dirección del remitente
+			$headers .= "From: ".$sender."\r\n";
+			//dirección de respuesta, si queremos que sea distinta que la del remitente
+			$headers .= "Reply-To: ".$sender."\r\n";
+			$message=$this->deUtf8($message);
+			if(mail($destino,$subject,$message,$headers)){
+				$error="";
+				$this->setErrorZero();
+				return;
+			} 
+			else{
+				$error="No envio el email";
+				$this->setError($error);
+				return -1;
+			}
 		}
 	}
 	//Establece el mensaje del email
@@ -1012,40 +1048,6 @@ class xsqlart{
 		    }
 		}
 		return $message;
-	}
-	public function MailSend($sender,$subject,$message,$destino){
-		//SEND EMAIL HTML ISO ENCODING
-		//Con codificacion UTF8
-		//dirección del remitente
-		//para el envío en formato HTML
-		$eol="\r\n";
-	    $semi_rand=md5(time());
-	    $mime_boundary = "==Multipart_Boundary_a{$semi_rand}a";
-		//headers 
-		$headers.="From: ".$sender."\r\n";
-	    $headers.="MIME-Version: 1.0".$eol;
-	    $headers.="Content-Type: multipart/mixed; boundary=\"".$mime_boundary."\"".$eol;
-	    $headers.="Content-Transfer-Encoding: 7bit".$eol;
-	    $headers.="This is a MIME encoded message.".$eol;
-		$headers.="Content-Type: text/plain; charset=\"iso-8859-1\"".$eol;
-		$headers.="Reply-To: ".$sender.$eol;
-		$headers.='X-Mailer: PHP/' . phpversion();
-		$adjuntos=$this->uploadFilesToMail();
-	    //message
-		$message=$this->deUtf8($message).$eol;
-		$message.=$adjuntos;
-		if(mail($destino,$subject,$message,$headers)){
-			$msg="Mail Enviado!!";
-			$this->setErrorZero();
-			$this->printCad($msg);
-			return;
-		} 
-		else{
-			$error="Ocurrió un error al enviar mail. Vuelva a intentarlo...";
-			$this->setError($error);
-			$this->showError($error);
-			return -1;
-		}
 	}
 	/******************************************************************************
 	 * 

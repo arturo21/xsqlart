@@ -86,3 +86,9 @@ $archivosalida="tablaprueba.csv";
 $sql="SELECT * FROM tabla"
 $dbn->ExportCSV($archivosalida,$sql);
 ```
+
+## Enviar correos con formato HTML
+```
+$formato='html';
+$dbn->MailSend($sender,$subject,$message,$destino,$formato);
+```
