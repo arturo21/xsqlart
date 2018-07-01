@@ -51,11 +51,6 @@ if($dbn->Execute($qrysentence)){
 }
 ```
 
-## Enviar un correo con formato HTML
-```
-$dbn->emailSend($sender,$subject,$message,$destino);
-```
-
 ## Generar cadena de caracteres pseudoaleatorios de una longitud determinada
 ```
 $cantchar="128";
