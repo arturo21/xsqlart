@@ -96,8 +96,5 @@ $dbn->MailSend($sender,$subject,$message,$destino,$formato);
 ```
 
 ## Si te gustó y deseas apoyarme, puedes realizar una donación 
+[CLICK AQUI PARA EFECTUAR UNA DONACION](https://sellfy.com/p/U87B/)
 
-```html
-<a href="https://sellfy.com/p/U87B/" id="U87B" class="sellfy-buy-button in-new-page">Buy now</a>
-<script type="text/javascript" src="https://sellfy.com/js/api_buttons.js"></script>
-```
