@@ -15,9 +15,16 @@
 
 # EJEMPLOS
 
-## Conectar a base de datos MySQL
+Instanciar la clase
 ```
 $dbn=new xsqlart();
+```
+## Obtener versión PHP
+
+$dbn->getPhpVersion()
+
+## Conectar a base de datos MySQL
+```
 $dbn->setCodif('utf8');
 $dbn->saveSetConex(USUARIO_BD,CLAVE_BD,SERVIDOR_BD,NOMBRE_BD);
 ```

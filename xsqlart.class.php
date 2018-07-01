@@ -44,7 +44,7 @@
  * 25. ADDED HASH Support
  * 26. BUGFIX iteración infinita al realizar select dentro de un while - agregando array de numeros de filas y consultas realizadas
  * 27. ADDED Funcion saveSetConex (Guarda los datos y conecta. en euna sola línea)
- * 28 PHP 7 compatibility en proceso;
+ * 28. BUGFIXED PHP 7 compatibility;
 */
 error_reporting("E_ERROR");
 define("XSQLART_OPERATIONS_FILE", "operations.log");
@@ -78,7 +78,7 @@ class xsqlart{
 	protected $pedido;
 	protected $resp;
 	protected $condicional;
-	//ID de conexion //////
+	//Socket de conexion //////
 	protected $conexion;
 	//////////////////////
 	protected $bd;
