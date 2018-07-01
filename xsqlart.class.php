@@ -44,7 +44,7 @@
  * 25. ADDED HASH Support
  * 26. BUGFIX iteración infinita al realizar select dentro de un while - agregando array de numeros de filas y consultas realizadas
  * 27. ADDED Funcion saveSetConex (Guarda los datos y conecta. en euna sola línea)
- * 28 PHP 7 compatibility;
+ * 28 PHP 7 compatibility en proceso;
 */
 error_reporting("E_ERROR");
 define("XSQLART_OPERATIONS_FILE", "operations.log");
@@ -609,54 +609,17 @@ class xsqlart{
 		return $this->currency;
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public function setLimitSQL($limitest){
-		$this->limitesql=$limitest;
-	}
-	public function getLimitSQL(){
-		return $this->limitesql;
-	}
-	public function setWhereSQL($wherest1,$relwhere,$wherest2){
-		//patron /^([A-Z][a-z][0-9])*<|>|=!|<=|>=([A-Z][a-z][0-9])*$*/
-		$this->wheresql1=$wherest1;
-		$this->relasql=$relwhere;
-		$this->wheresql2=$wherest2;
-	}
-	public function setWhereSQL_regexp($wherestring){
+	public function condition($conditionu,$rel,$conditiond){
 		//patron /^[A-Za-z0-9_]*(<|>|=!|<=|>=)[A-Za-z0-9_]*$/
 		$patron="/^([A-Za-z0-9_ ]*)(>|<|>=|<=|!=|==|=|LIKE|NOT|EQUAL|<>)\'([A-Za-z0-9_ ]*)\'/";
-		preg_match($patron,$wherestring,$conic);
-		if(preg_match($patron,$wherestring,$conic)){
-			$this->wheresql1=$conic[1];
-			$this->relasql=$conic[2];
-			$this->wheresql2=$conic[3];
+		$sqlconditquery=$conditionu." ".$rel." ".$conditiond;
+		if(preg_match($patron,$sqlconditquery)){
+			$this->Execute($sqlconditquery);
 			return;
 		}
 		else{
 			return -1;
 		}
-	}
-	public function getWhereSQL_arr(){
-		$relarr=array();
-		$s1=$this->wheresql1;
-		$r1=$this->relasql;
-		$s2=$this->wheresql2;
-		if($s1!='' && $r1!='' && $s2!=''){
-			$this->relarr[]=array(
-				'Campo 1'=>$s1,
-				'Relacion'=>$r1,
-				'Campo2'=>$s2);
-		}
-		return $this->wheresql;
-	}
-	public function getWhereSQL_str(){
-		$s1=$this->wheresql1;
-		$r1=$this->relasql;
-		$s2=$this->wheresql2;
-		
-		if($s1!='' && $r1!='' && $s2!=''){
-			$strwhere=$s1.$r1.$s2;	
-		}
-		return $strwhere;
 	}
 	public function setIDConn(){
 		$this->conexion=$this->getSocket();
@@ -790,7 +753,6 @@ class xsqlart{
 					}
 					else{
 						if($consfinal=='SELECT'){
-							$this->getRows();
 							$this->appendOperMsg("Se ha hecho un SELECT. Filas obtenidas=".$this->getRows(),"DB","root");
 						}
 					}
@@ -815,7 +777,6 @@ class xsqlart{
 					}
 					else{
 						if($consfinal=='SELECT'){
-							$this->getRows();
 							$this->appendOperMsg("Se ha hecho un SELECT. Filas obtenidas=".$this->getRows(),"DB","root");
 						}
 					}
@@ -1186,73 +1147,10 @@ class xsqlart{
 		public function getDataFields(){
 			$conn=$this->getIDConn();
 			if($conn){
-				$limite=$this->limitesql;
-				$tablai=$this->tabla;
-				$numargs = func_num_args();
-			    $argulist = func_get_args();
-			    $query="SELECT ";
-			    
-			    if($argulist[0]!='*'){
-				    for($i=0;$i<$numargs;$i++){
-				    	if($i!=($numargs-1)){
-				    		$query.=$argulist[$i].", ";
-				    	}
-				    	else{
-				    		$query.=$argulist[$i];
-				    	}
-				    }
-			    }
-			    else{
-			    	$query.='* ';
-			    }
-		    	
-		    	if($limite!=''){
-		    		$query.=" FROM ".$tablai." LIMIT ".$limite;	
-		    	}
-		    	else{
-		    		$query.=" FROM ".$tablai;    	
-		    	}
-		    	
-				if($query!=''){
-					$this->lastped=mysqli_query($conn,$query);
-				}
-				else{
-					$this->lastped=mysqli_query($this->lastcons,$conn);
-				}
-				
-				if($this->lastped){
-					if($query!=''){
-						$this->lastcons=$query;
-						$this->rowarray[$this->rowcont]=mysqli_num_rows($this->lastped);
-							
-						$consarr=explode(' ',$query);
-						
-						if($consarr[0]=='INSERT'){
-							$idins=mysqli_insert_id();
-							$this->idinsert=$idins;
-						}
-						
-						$data=mysqli_fetch_array($this->lastped);
-						return $data;	
-					}
-					else{
-						$query=$this->lastcons;
-						$this->rowarray[$this->rowcont]=mysqli_num_rows($this->lastped);
-						
-						$consarr=explode(' ',$query);
-						
-						if($consarr[0]=='INSERT'){
-							$idins=mysqli_insert_id();
-							$this->idinsert=$idins;
-						}
-						$data=mysqli_fetch_array($this->lastped);
-						return $data;				
-					}
-				}
-				else{
-					$error="<h3>".mysqli_error()."</h3>";
-					return $error;
-				}
+				$sql='SHOW COLUMNS FROM table_name';
+				$this->Execute($sql);
+				$data=$res->getAllData();
+				echo(json_encode($data));
 			}
 		}
 		public function getStringToInt($date){
