@@ -1,10 +1,12 @@
 # xSQLART
-# Compatible con PHP 7
-#### Framework PHP que ayuda a manejar consultas MySQL, escribiendo menos código,
+# Compatible con PHP 7, 5
+## Librería PHP que te ayuda en el manejo de consultas a bases de datos MySQL.
 
-#### Reutilizando el código con sólo COPIAR y PEGAR.
+## Reutilización de código con sólo COPIAR y PEGAR. 
 
-#### Haz más con menos.
+## Sin tener que cambiar nombres de identificadores, variables, etc.
+
+# Haz más con menos.
 
 /*
 	Copyright (c) 2017 Arturo Vásquez Soluciones de Sistemas 2716
@@ -21,7 +23,7 @@ $dbn=new xsqlart();
 ```
 ## Obtener versión PHP
 
-$dbn->getPhpVersion()
+$dbn->getPhpVersion();
 
 ## Conectar a base de datos MySQL
 ```
@@ -97,7 +99,7 @@ $dbn->MailSend($sender,$subject,$message,$destino,$formato);
 
 ## Si te gustó y deseas apoyarme, <br /> 
 
-## Haz Click en uno de los enlaces siguientes: 
+# Haz Click en uno de los enlaces siguientes: 
 
 -- Sellfy -- <br />
 [DONATE](https://sellfy.com/p/U87B/) <br />
