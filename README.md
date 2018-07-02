@@ -22,9 +22,9 @@
 $dbn=new xsqlart();
 ```
 ## Obtener versión PHP
-
+```php
 $dbn->getPhpVersion();
-
+```
 ## Conectar a base de datos MySQL
 ```php
 $dbn->setCodif('utf8');
