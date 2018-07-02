@@ -95,9 +95,10 @@ $formato='html';
 $dbn->MailSend($sender,$subject,$message,$destino,$formato);
 ```
 
-## Si te gustó y deseas apoyarme, puedes realizar una donación 
+## Si te gustó y deseas apoyarme, <br /> 
 
-## DONACIONES
+## Haz Click en uno de los enlaces siguientes: 
+
 -- Sellfy -- <br />
 [DONATE](https://sellfy.com/p/U87B/) <br />
 -- Paypal -- <br />
