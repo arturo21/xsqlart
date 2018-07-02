@@ -18,7 +18,7 @@
 # EJEMPLOS
 
 ## Instanciar la clase
-```
+```php
 $dbn=new xsqlart();
 ```
 ## Obtener versión PHP
@@ -26,13 +26,13 @@ $dbn=new xsqlart();
 $dbn->getPhpVersion();
 
 ## Conectar a base de datos MySQL
-```
+```php
 $dbn->setCodif('utf8');
 $dbn->saveSetConex(USUARIO_BD,CLAVE_BD,SERVIDOR_BD,NOMBRE_BD);
 ```
 
 ## Crear una consulta simple
-```
+```php
 $qrysentence="SELECT * FROM tabla";
 if($dbn->Execute($qrysentence)){
 	if($dbn->getRows()>0){
@@ -45,7 +45,7 @@ if($dbn->Execute($qrysentence)){
 ```
 
 ## Crear una consulta y extraer un array de datos
-```
+```php
 $qrysentence="SELECT * FROM tabla";
 if($dbn->Execute($qrysentence)){
 	if($dbn->getRows()>0){
@@ -61,38 +61,38 @@ if($dbn->Execute($qrysentence)){
 ```
 
 ## Generar cadena de caracteres pseudoaleatorios de una longitud determinada
-```
+```php
 $cantchar="128";
 $cadena=$dbn->genHash($cantchar);
 ```
 
 ## Generar HASH SHA512
-```
+```php
 $cantchar="sdfsdfsdfsdfsdfsdf";
 $dbn->hashcad($cantchar);
 ```
 
 ## Generar HASH según algoritmo indicado
-```
+```php
 $cantchar="asdasdasdasdasdasdasdasdasd";
 $dbn->hashcadalgo($cantchar,"SHA512");
 ```
 
 ## Exportar archivo SQL de base de datos
-```
+```php
 $bd="prueba";
 $dbn->ExportarSQL($bd);
 ```
 
 ## Exportar archivo CSV de base de datos por tabla
-```
+```php
 $archivosalida="tablaprueba.csv";
 $sql="SELECT * FROM tabla"
 $dbn->ExportCSV($archivosalida,$sql);
 ```
 
 ## Enviar correos con formato HTML
-```
+```php
 $formato='html';
 $dbn->MailSend($sender,$subject,$message,$destino,$formato);
 ```
