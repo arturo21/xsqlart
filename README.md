@@ -17,7 +17,7 @@
 
 # EJEMPLOS
 
-Instanciar la clase
+## Instanciar la clase
 ```
 $dbn=new xsqlart();
 ```
