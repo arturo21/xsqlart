@@ -733,7 +733,8 @@ class xsqlart{
 		return 0;
 	}
 	////SHORTCUTS
-	public function execute($query){
+	//dosql as Execute
+	public function dosql($query){
 		$this->Execute($query);
 		return 0;
 	}
@@ -753,8 +754,10 @@ class xsqlart{
 			else{
 				$query=$this->getLastQueryStatement();
 			}
-			$this->queryarray[$this->querycont]=mysqli_query($conn,$query);
-			$this->setLastQuery($this->queryarray[$this->querycont]);
+			$querytmp=mysqli_query($conn,$query);
+			$this->queryarray[$this->querycont]=$querytmp;
+			$this->setLastQuery($querytmp);
+			$this->appendOperMsg("Registrando ID ultima consulta...","DB","root");
 			if($this->getLastQuery()!=''){
 				if($this->getLastQueryStatement()!=''){
 					$consarr=$this->getSeparar($this->getLastQueryStatement(),' ');
@@ -762,7 +765,10 @@ class xsqlart{
 					$consfinal=trim($consarr[0]);
 					if($consfinal=='INSERT'){
 						$pedido=$this->getLastQuery();
-						$this->setIDInsert($pedido->insert_id);
+						$this->appendOperMsg("ID Ultimo Query=".$pedido,"DB","root");
+						$uinsert=mysqli_insert_id($conn);
+						$this->setIDInsert($uinsert);
+						$this->appendOperMsg("ID Ultimo INSERT".$uinsert,"DB","root");
 						$this->appendOperMsg("Se ha hecho un Insert. ID=".$this->getIDInsert(),"DB","root");
 					}
 					else{
@@ -786,7 +792,10 @@ class xsqlart{
 					$consfinal=trim($consarr[0]);
 					if($consfinal=='INSERT'){
 						$pedido=$this->getLastQuery();
-						$this->setIDInsert($pedido->insert_id);
+						$this->appendOperMsg("ID Ultimo Query=".$pedido,"DB","root");
+						$uinsert=mysqli_insert_id($conn);
+						$this->setIDInsert($uinsert);
+						$this->appendOperMsg("ID Ultimo INSERT".$uinsert,"DB","root");
 						$this->appendOperMsg("Se ha hecho un Insert. ID=".$this->getIDInsert(),"DB","root");
 					}
 					else{
@@ -853,6 +862,7 @@ class xsqlart{
 		else{
 			return;
 		}
+		mysqli_free_result();
 	}
 	public function getRows(){
 		$result=$this->getLastQuery();
