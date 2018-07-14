@@ -759,110 +759,51 @@ class xsqlart{
 			$this->queryarray[$this->querycont]=$querytmp;
 			$this->setLastQuery($querytmp);
 			$this->appendOperMsg("Registrando ID ultima consulta...","DB","root");
-			if($this->getLastQuery()!=''){
-				if($this->getLastQueryStatement()!=''){
-					$consarr=$this->getSeparar($this->getLastQueryStatement(),' ');
-					$this->appendOperMsg("Consulta Realizada: ".$this->getLastQueryStatement(),"DB","root");
-					$consfinal=trim($consarr[0]);
-					if($consfinal=='INSERT'){
-						$pedido=$this->getLastQuery();
-						$this->appendOperMsg("ID Ultimo Query=".$pedido,"DB","root");
-						$uinsert=mysqli_insert_id($conn);
-						$this->setIDInsert($uinsert);
-						$this->appendOperMsg("ID Ultimo INSERT".$uinsert,"DB","root");
-						$this->appendOperMsg("Se ha hecho un Insert. ID=".$this->getIDInsert(),"DB","root");
-					}
-					else{
-						if($consfinal=='SELECT'){
-							$this->appendOperMsg("Se ha hecho un SELECT. Filas obtenidas=".$this->getRows(),"DB","root");
+			if($querytmp){
+					if($this->getLastQuery()!=''){
+						if($this->getLastQueryStatement()!=''){
+							$consarr=$this->getSeparar($this->getLastQueryStatement(),' ');
+							$this->appendOperMsg("Consulta Realizada: ".$this->getLastQueryStatement(),"DB","root");
+							$consfinal=trim($consarr[0]);
+							if($consfinal=='INSERT'){
+								$pedido=$this->getLastQuery();
+								$this->appendOperMsg("ID Ultimo Query=".$pedido,"DB","root");
+								$uinsert=mysqli_insert_id($conn);
+								$this->setIDInsert($uinsert);
+								$this->appendOperMsg("ID Ultimo INSERT".$uinsert,"DB","root");
+								$this->appendOperMsg("Se ha hecho un Insert. ID=".$this->getIDInsert(),"DB","root");
+							}
+							else{
+								if($consfinal=='SELECT'){
+									$this->appendOperMsg("Se ha hecho un SELECT. Filas obtenidas=".$this->getRows(),"DB","root");
+								}
+							}
+							if($this->setError(mysqli_error())){
+								$this->printCad($this->getError());
+								$this->appendOperMsg("Error Consulta ".$this->getError(),"DB","root");
+								return -10;
+							}
+							else{
+								return;
+							}
+							return;
 						}
+						$this->numcons++;
+						$this->querycont++;
+						return;
 					}
+				}
+				else{
 					if($this->setError(mysqli_error())){
-						$this->printCad($this->getError());
 						$this->appendOperMsg("Error Consulta ".$this->getError(),"DB","root");
-						return -10;
+						$this->printCad("ERROR DE CONEXION ".$this->getError());
+						return -15;
 					}
 					else{
 						return;
 					}
-					return;
-				}
-				else{
-					$consarr=$this->getSeparar($this->getLastQueryStatement(),' ');
-					$this->appendOperMsg("Consulta Realizada: ".$this->getLastQueryStatement(),"DB","root");
-					$consfinal=trim($consarr[0]);
-					if($consfinal=='INSERT'){
-						$pedido=$this->getLastQuery();
-						$this->appendOperMsg("ID Ultimo Query=".$pedido,"DB","root");
-						$uinsert=mysqli_insert_id($conn);
-						$this->setIDInsert($uinsert);
-						$this->appendOperMsg("ID Ultimo INSERT".$uinsert,"DB","root");
-						$this->appendOperMsg("Se ha hecho un Insert. ID=".$this->getIDInsert(),"DB","root");
-					}
-					else{
-						if($consfinal=='SELECT'){
-							$this->appendOperMsg("Se ha hecho un SELECT. Filas obtenidas=".$this->getRows(),"DB","root");
-						}
-					}
-					if($this->setError(mysqli_error())){
-						$this->appendOperMsg("Error Consulta ".$this->getError(),"DB","root");
-						$this->printCad($this->getError());
-						return -11;
-					}
-					else{
-						return;
-					}
-					return;
-				}
-				if($this->setError(mysqli_error())){
-					$this->printCad($this->getError());
-					$this->appendOperMsg("Error Consulta ".$this->getError(),"DB","root");
-					return -12;
-				}
-				else{
-					return;
-				}
-				$this->numcons++;
-				$this->querycont++;
-				return;
-			}
-			else{
-				if($this->setError(mysqli_error())){
-					$this->appendOperMsg("Error Consulta ".$this->getError(),"DB","root");
-					$this->printCad($this->getError());
-					return -13;
-				}
-				else{
-					return;
 				}
 			}
-			if($this->setError(mysqli_error())){
-				$this->appendOperMsg("Error Consulta ".$this->getError(),"DB","root");
-				$this->printCad($this->getError());
-				return -14;
-			}
-			else{
-				return;
-			}
-		}
-		else{
-			if($this->setError(mysqli_error())){
-				$this->appendOperMsg("Error Consulta ".$this->getError(),"DB","root");
-				$this->printCad("ERROR DE CONEXION ".$this->getError());
-				return -15;
-			}
-			else{
-				return;
-			}
-		}
-		if($this->setError(mysqli_error())){
-			$this->appendOperMsg("Error Consulta ".$this->getError(),"DB","root");
-			$this->printCad($this->getError());
-			return -16;
-		}
-		else{
-			return;
-		}
 		mysqli_free_result();
 	}
 	public function getRows(){
