@@ -778,15 +778,6 @@ class xsqlart{
 									$this->appendOperMsg("Se ha hecho un SELECT. Filas obtenidas=".$this->getRows(),"DB","root");
 								}
 							}
-							if($this->setError(mysqli_error())){
-								$this->printCad($this->getError());
-								$this->appendOperMsg("Error Consulta ".$this->getError(),"DB","root");
-								return -10;
-							}
-							else{
-								return;
-							}
-							return;
 						}
 						$this->numcons++;
 						$this->querycont++;
@@ -794,7 +785,8 @@ class xsqlart{
 					}
 				}
 				else{
-					if($this->setError(mysqli_error())){
+					if(mysqli_error()){
+						$this->setError(mysqli_error());
 						$this->appendOperMsg("Error Consulta ".$this->getError(),"DB","root");
 						$this->printCad("ERROR DE CONEXION ".$this->getError());
 						return -15;
