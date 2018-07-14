@@ -36,7 +36,7 @@
  * 17. ADDED Cambio de sintaxis al invocar cada función, por modificacion de "return 0;" por "return;" para rapidez en codificacion
  * 18. FIXED ExportSQL Cambio de algoritmo
  * 19. DEPRECATED ExportSQL_dif
- * 20. ADDED Array de consultas y Array de filas 
+ * 20. ADDED Array de consultas y Array de filas
  * 21. FIXED Funcion setConex
  * 23. FIXED CHANGED ImportCSV Cambio de algoritmo
  * 23. FIXED CHANGED Hacer referencia a funciones internas para reutilizar código
@@ -46,7 +46,7 @@
  * 27. ADDED Funcion saveSetConex (Guarda los datos y conecta. en euna sola línea)
  * 28. BUGFIXED PHP 7 compatibility;
 */
-error_reporting("E_ERROR");
+error_reporting("E_ALL");
 define("XSQLART_OPERATIONS_FILE", "operations.log");
 define("XSQLART_PHP_EXTENSION", ".php");
 define("XSQLART_SQL_EXTENSION", ".sql");
@@ -144,7 +144,7 @@ class xsqlart{
 	}
 	public function setDB($db){
 		$this->db=$db;
-		return;		
+		return;
 	}
 	public function setServer($serveridor){
 		$this->servidor=$serveridor;
@@ -216,23 +216,23 @@ class xsqlart{
 							$this->setPort($puerto);
 						}
 						else{
-							return -5; 
+							return -5;
 						}
 					}
 					else{
-						return -4; 
+						return -4;
 					}
 				}
 				else{
-					return -3; 
+					return -3;
 				}
 			}
 			else{
-				return -2; 
+				return -2;
 			}
 		}
 		else{
-			return -1; 
+			return -1;
 		}
 		return;
 	}
@@ -251,23 +251,23 @@ class xsqlart{
 							$this->setConex();
 						}
 						else{
-							return -5; 
+							return -5;
 						}
 					}
 					else{
-						return -4; 
+						return -4;
 					}
 				}
 				else{
-					return -3; 
+					return -3;
 				}
 			}
 			else{
-				return -2; 
+				return -2;
 			}
 		}
 		else{
-			return -1; 
+			return -1;
 		}
 		return;
 	}
@@ -279,7 +279,7 @@ class xsqlart{
 		else{
 			$this->conexion=$tmp;
 		}
-		return 0; 
+		return 0;
 	}
 	public function setConex(){
 		$this->closeConnID($this->getIDConn());
@@ -308,6 +308,7 @@ class xsqlart{
 			$server=$this->getServer();
 		}
 		$this->setConexSocket(mysqli_connect($server,$usuario,$clave,$bd));
+		$this->appendOperMsg("Nueva Conexion Realizada","DB","root");
 	}
 	public function closeConn(){
 		if($this->getIDConn()!=-1){
@@ -342,7 +343,7 @@ class xsqlart{
 		$codificacion=strtolower($codificacion);
 
 		if($codificacion=='utf8'){
-			$this->codifica=$codificacion;		
+			$this->codifica=$codificacion;
 		}
 		else{
 			$this->printCad(utf8_decode("Codificación no soportada"));
@@ -350,7 +351,7 @@ class xsqlart{
 	}
 	public function getCodif(){
 		if($this->codifica!=''){
-			return $this->codifica;		
+			return $this->codifica;
 		}
 		else{
 			return -1;
@@ -362,7 +363,7 @@ class xsqlart{
 	 * 											START DATA COLECTOR FUNCTIONS							*
 	 * 																									*
 	 * 																									*
-	 * **************************************************************************************************/	
+	 * **************************************************************************************************/
 	public function seekDataColector($nombre){
 		if($nombre!=''){
 			$encontrado=-2;
@@ -372,7 +373,7 @@ class xsqlart{
 					return $encontrado;
 				}
 			}
-			
+
 			if($encontrado==-2){
 				return $encontrado;
 			}
@@ -403,7 +404,7 @@ class xsqlart{
 		}
 		else{
 			return -1;
-		}		
+		}
 	}
 	//INTERNO de la funcion (no para el desarrollador)
 	function seekIDColector($nombre){
@@ -414,7 +415,7 @@ class xsqlart{
 				return $encontrado;
 			}
 		}
-		
+
 		if($encontrado==-2){
 			return $encontrado;
 		}
@@ -422,7 +423,7 @@ class xsqlart{
 	//////////////////////////////////
 	public function setDataColector($nombre){
 		$arrayDatos=array();
-		/* setDataColector busca la ultima sentencia SQL la ejecuta 
+		/* setDataColector busca la ultima sentencia SQL la ejecuta
 		 * y almacena los datos pertinentes en un Array,
 		 * luego los almacena en el colector de datos para su posterior operación*/
 		if(!$this->seekDataColector($nombre)){
@@ -430,7 +431,7 @@ class xsqlart{
 			if($this->Execute()){
 				if($this->getRows()>0){
 					while($data=$this->getData()){
-						$arrayDatos[]=$data;			
+						$arrayDatos[]=$data;
 					}
 					// y vacia los datos pertinentes en el ArrayDatos
 					$this->nomecolector[$this->numcolectors]=$nombre;
@@ -497,7 +498,7 @@ class xsqlart{
 					$this->printCad("<thead>");
 						$this->printCad("<th>".$campomos."</th>");
 					$this->printCad("</thead>");
-					
+
 					$this->printCad("<tbody>");
 						//trabaja con Arrays Tridimensionales
 						foreach($this->datanumcolector[$id] as $llave => $valor){
@@ -508,7 +509,7 @@ class xsqlart{
 							}
 						}
 					$this->printCad("</tbody>");
-				$this->printCad("</table>");			
+				$this->printCad("</table>");
 			}
 			else{
 				//mostrar informacion precisa alamacenada en los colectores
@@ -517,7 +518,7 @@ class xsqlart{
 					$this->printCad("<thead>");
 						$this->printCad("<th>".$campo."</th>");
 					$this->printCad("</thead>");
-					
+
 					$this->printCad("<tbody>");
 						foreach($this->datanumcolector[$id] as $llave => $valor){
 							$this->printCad("<tr>");
@@ -526,12 +527,12 @@ class xsqlart{
 						}
 					$this->printCad("</tbody>");
 				$this->printCad("</table>");
-				
+
 			}
 		}
 		else{
 			return -1;
-		}	
+		}
 	}
 	public function getDataInColector($nombreColector,$campo,$valorStr){
 		//obtiene alguna informacion y la devuelve en forma de Array, no la imprime
@@ -554,7 +555,7 @@ class xsqlart{
 		}
 		else{
 			return -1;
-		}	
+		}
 	}
 	public function eraseDataColector($nombre){
 		//elimina el colector y su informacion de el
@@ -564,7 +565,7 @@ class xsqlart{
 			$this->datanumcolector[$id]=0;
 			$this->datanumcolector=$this->orderVector($this->datanumcolector);
 			$this->nomecolector=$this->orderVector($this->nomecolector);
-			$this->numcolectors--;		
+			$this->numcolectors--;
 		}
 	}
 	//ordena un vector con el metodo shellSort
@@ -740,7 +741,7 @@ class xsqlart{
 	}
 	/////////////////
 	public function Execute($query){
-		$this->appendOperMsg("Iniciando conexion a la Bd...");
+		$this->appendOperMsg("Iniciando conexion a la Bd...","DB","root");
 		//Reinicia Conexion y ejecuta sentencia SQL
 		$this->Reload();
 		//Reinstanciar la clase y conexion a la BD
@@ -980,7 +981,7 @@ class xsqlart{
 			$eol="\r\n";
 		    $semi_rand=md5(time());
 		    $mime_boundary = "==Multipart_Boundary_a{$semi_rand}a";
-			//headers 
+			//headers
 			$headers.="From: ".$sender."\r\n";
 		    $headers.="MIME-Version: 1.0".$eol;
 		    $headers.="Content-Type: multipart/mixed; boundary=\"".$mime_boundary."\"".$eol;
@@ -998,7 +999,7 @@ class xsqlart{
 				$this->setErrorZero();
 				$this->printCad($msg);
 				return;
-			} 
+			}
 			else{
 				$error="Ocurrió un error al enviar mail. Vuelva a intentarlo...";
 				$this->setError($error);
@@ -1016,7 +1017,7 @@ class xsqlart{
 				$error="";
 				$this->setErrorZero();
 				return;
-			} 
+			}
 			else{
 				$error="No envio el email";
 				$this->setError($error);
@@ -1032,7 +1033,7 @@ class xsqlart{
 	//Obtiene el mensaje del email
 	public function getEmailMessage(){
 		if($this->emailmessage!=''){
-			return $this->emailmessage; 
+			return $this->emailmessage;
 		}
 		else{
 			return -1;
@@ -1041,7 +1042,7 @@ class xsqlart{
 	//Show message on the screen
 	public function showEmailMessage(){
 		if($this->emailmessage!=''){
-			$this->printCad(($this->emailmessage)); 
+			$this->printCad(($this->emailmessage));
 			return;
 		}
 		else{
@@ -1065,8 +1066,8 @@ class xsqlart{
 		        $data = fread($this->archivosmail,filesize($this->archivosmail_tf[$x]));
 		        fclose($file);
 		        $data = chunk_split(base64_encode($data));
-		        $message .= "Content-Type: {\"application/octet-stream\"};\n" . " name=\"$this->archivosmail[$x]\"\n" . 
-		        "Content-Disposition: attachment;\n" . " filename=\"$this->archivosmail[$x]\"\n" . 
+		        $message .= "Content-Type: {\"application/octet-stream\"};\n" . " name=\"$this->archivosmail[$x]\"\n" .
+		        "Content-Disposition: attachment;\n" . " filename=\"$this->archivosmail[$x]\"\n" .
 		        "Content-Transfer-Encoding: base64\n\n".$data."\n\n";
 		        $message .= "--{$mime_boundary}\n";
 		    }
@@ -1074,19 +1075,19 @@ class xsqlart{
 		return $message;
 	}
 	/******************************************************************************
-	 * 
+	 *
 	 *                                   END SENDING MAILS
-	 * 
-	 * 
+	 *
+	 *
 	 * ***************************************************************************/
 		public function printCad($mensaje){
 			echo($mensaje);
 		}
 	/******************************************************************************
-	 * 
+	 *
 	 *                         PRINT STRING WITH UTF8 ENCODING
-	 * 
-	 * 
+	 *
+	 *
 	 * ***************************************************************************/
 		public function dePrinto($mensaje){
 			if($this->codifica!=''){
@@ -1149,7 +1150,7 @@ class xsqlart{
 			$pedido=$this->getLastQuery();
 			if($pedido){
 				$arrayresult=$pedido->fetch_all(MYSQLI_BOTH);
-				return $arrayresult;		
+				return $arrayresult;
 			}
 			else{
 				return -1;
@@ -1181,7 +1182,7 @@ class xsqlart{
 		}
 		public function getStringToInt($date){
 			$dato=intval($date);
-			return $dato; 
+			return $dato;
 		}
 		public function showStringToInt($date){
 			$result=$this->getStringToInt($date);
@@ -1190,22 +1191,22 @@ class xsqlart{
 		}
 		public function getSeparar($cad,$separador){
 			$data=explode($separador,$cad);
-			return $data; 
+			return $data;
 		}
 		public function getAnio($date){
 			$data=$this->getSeparar($date, "-");
 			$anio=$data[0];
-			return $anio; 	
+			return $anio;
 		}
 		public function getMes($date){
 			$data=$this->getSeparar($date, "-");
 			$mes=$data[1];
-			return $mes; 		
+			return $mes;
 		}
 		public function getDia($date){
 			$data=$this->getSeparar($date, "-");
 			$dia=$data[2];
-			return $dia;		
+			return $dia;
 		}
 		public function getTime($date){
 			$data=time();
@@ -1214,12 +1215,12 @@ class xsqlart{
 		public function getIntAnio($date){
 			$data=$this->getAnio($date);
 			$data=intval($data);
-			return $data; 	
+			return $data;
 		}
 		public function getIntMes($date){
 			$data=$this->getMes($date);
 			$data=intval($data);
-			return $data; 		
+			return $data;
 		}
 		public function getIntDia($date){
 			$data=$this->getDia($date);
@@ -1234,14 +1235,14 @@ class xsqlart{
 		public function showMes($date){
 			$data=$this->getMes($date);
 			$this->printCad($data);
-			return; 		
+			return;
 		}
 		public function showDia($date){
 			$data=$this->getDia($date);
 			$this->printCad($data);
-			return;		
+			return;
 		}
-		
+
 	/****************************************************************************************************
 	 * 																									*
 	 * 																									*
@@ -1250,11 +1251,11 @@ class xsqlart{
 	 * 																									*
 	 * **************************************************************************************************/
 		public function ImportSQL($usuario, $passwd, $db){
-			$executa="mysql -u $usuario -p $passwd $db";  
-			system($executa, $resultado);  
+			$executa="mysql -u $usuario -p $passwd $db";
+			system($executa, $resultado);
 			if(!$resultado){
-				echo("<H1>Error ejecutando comando: $executa</H1>\n");  
-			} 
+				echo("<H1>Error ejecutando comando: $executa</H1>\n");
+			}
 		}
 		public function ImportCSV($archivo,$BD,$tabla){
 			$conn=$this->conexion;
@@ -1279,7 +1280,7 @@ class xsqlart{
 				/********************************/
 				$addauto = 0;
 				/********************************/
-				
+
 				/* Would you like to save the mysql queries in a file? If yes set $save to 1.
 				/* Permission on the file should be set to 777. Either upload a sample file through ftp and
 				/* change the permissions, or execute at the prompt: touch output.sql && chmod 777 output.sql
@@ -1325,7 +1326,7 @@ class xsqlart{
 				        else{
 				        	$query="INSERT INTO $databasetable values('$linemysql');";
 				        }
-				        $queries.=$query."\n";			
+				        $queries.=$query."\n";
 				        @mysqli_query($query);
 				}
 				//@mysqli_close($con);
@@ -1357,44 +1358,44 @@ class xsqlart{
 					    $csv_enclosed = '"';
 					    $csv_escaped = "\\";
 					    $sql_query = $sql;
-					 
+
 					    // Gets the data from the database
 					    $fields_cnt = $this->getDataNumFields();
 					    $schema_insert = '';
-					 
+
 					    for ($i = 0; $i < $fields_cnt; $i++){
 					        $l = $csv_enclosed . str_replace($csv_enclosed, $csv_escaped . $csv_enclosed,
 					            stripslashes(mysqli_field_name($this->lastped, $i))) . $csv_enclosed;
 					        $schema_insert .= $l;
 					        $schema_insert .= $csv_separator;
 					    } // end for
-					 
+
 					    $out = trim(substr($schema_insert, 0, -1));
 					    $out .= $csv_terminated;
-					 
+
 					    // Format the data
 					    while ($row = $this->getData()){
 					        $schema_insert = '';
 					        for ($j = 0; $j < $fields_cnt; $j++){
 					            if ($row[$j] == '0' || $row[$j] != ''){
-					 
+
 					                if ($csv_enclosed == ''){
 					                    $schema_insert .= $row[$j];
-					                } 
+					                }
 					                else{
 					                    $schema_insert .= $csv_enclosed .
 					                    str_replace($csv_enclosed, $csv_escaped . $csv_enclosed, $row[$j]) . $csv_enclosed;
 					                }
-					            } 
+					            }
 					            else{
 					                $schema_insert .= '';
 					            }
-					 
+
 					            if ($j < $fields_cnt - 1){
 					                $schema_insert .= $csv_separator;
 					            }
 					        } // end for
-					 
+
 					        $out .= $schema_insert;
 					        $out .= $csv_terminated;
 					    } // end while
@@ -1408,7 +1409,7 @@ class xsqlart{
 			// Change the folder you want this uploaded to
 		    $folder = date("j_M_Y_G_i_s");
 		    $back_up_filename = $folder . '_REPORTE.csv';
-		    
+
 		    if(!file_exists($folder))
 		    {
 		        mkdir($folder);
@@ -1501,7 +1502,7 @@ class xsqlart{
 	 * 											END IMPORTACION DE DATOS								*
 	 * 																									*
 	 * 																									*
-	 * **************************************************************************************************/	
+	 * **************************************************************************************************/
 	public function showDataTableReport(){
 		$datares=array();
 		$argulist=array();
@@ -1510,10 +1511,10 @@ class xsqlart{
 		$numargu=0;
 		$camposnt=array();
 		$retfunc;
-		
+
 		$conn=$this->getIDConn();
 		if($conn){
-			$consulta=$this->lastcons;		
+			$consulta=$this->lastcons;
 			$pedido=mysqli_query($consulta,$conn);
 			if($pedido!=''){
 				//obtener numero de argumentos
@@ -1523,7 +1524,7 @@ class xsqlart{
 			    $this->printCad("<thead>");
 			    for($i=0;$i<$numargs;$i++){
 			    	$argu=$argulist[$i];
-			    	
+
 			    	//validar si el campo existe
 			    	$tabla=$this->tablareport;
 			    	if($tabla==''){
@@ -1554,7 +1555,7 @@ class xsqlart{
 					while($datanop=mysqli_fetch_array($pedido)){
 						$this->datares[]=$datanop;
 					}
-					
+
 					for($i=0;$i<=$filas;$i++){
 						$this->printCad("<tr>");
 						$numcol=$this->numsubtit;
@@ -1565,7 +1566,7 @@ class xsqlart{
 							$this->printCad("</td>");
 						}
 						$this->printCad("<tr>");
-					}			
+					}
 					$this->printCad("<tr>");
 					$this->printCad("<td>");
 					$this->printCad("N. Registros: ".$filas);
@@ -1582,9 +1583,9 @@ class xsqlart{
 		}
 		else{
 			return -1;
-		}		
+		}
 	}
-	
+
 	//Ejecuta dos sentencias SQL para seleccion e insercion de datos con validacion de filas
 	public function TwoSQLSentences($q1,$q2,$cond){
 		//ejecutar dos sentencias: una de seleccion y otra de insert o delete o update u otra select;
@@ -1632,7 +1633,7 @@ class xsqlart{
 				break;
 		}
 	}
-	
+
 	public function getNumCampos(){
 		return $this->numcampos;
 	}
@@ -1640,74 +1641,74 @@ class xsqlart{
 	public function getCharCampos(){
 		return $this->charcampos;
 	}
-	
+
 	public function setTable($tablabd){
 		$this->tabla=$tablabd;
 		return;
 	}
-	
+
 	public function setTableReport($tablarep){
 		$this->tablareport=$tablarep;
 		return;
 	}
-	
+
 	public function setSentence($sentence){
 		$this->othercons=$sentence;
 		return;
 	}
-	
+
 	public function getSentence(){
 		return $this->othercons;
 	}
-	
+
 	//////////////////////////////////////////////////////
 	public function setCampNomLogin($camponom){
 		$this->nomlogin=$camponom;
 		return;
 	}
-	
+
 	public function setCampClaveLogin($clavenom){
 		$this->clavelogin=$clavenom;
 		return;
 	}
-	
+
 	public function setCampNivelLogin($nivelnom){
 		$this->nivellogin=$nivelnom;
 		return;
 	}
-	
+
 	public function setTablaLogin($tablogin){
 		$this->tablaulogin=$tablogin;
 		return;
 	}
-	
+
 	public function setNivelAdmin($nivadm){
 		$this->niveladmin=$nivadm;
-		return;	
+		return;
 	}
 
 	public function setNivelUsuario($nivusr){
 		$this->nivelusuario=$nivusr;
 		return;
 	}
-	
+
 	//////////////////////////////////////////////////////////////////////
 	public function getCampNomLogin(){
 		return $this->nomlogin;
 	}
-	
+
 	public function getCampClaveLogin(){
 		return $this->clavelogin;
 	}
-	
+
 	public function getCampNivelLogin(){
 		return $this->nivellogin;
 	}
-	
+
 	public function getTablaLogin(){
 		return $this->tablaulogin;
 	}
-	
+
 	public function getNivelAdmin(){
 		return 	$this->niveladmin;
 	}
@@ -1715,7 +1716,7 @@ class xsqlart{
 	public function getNivelUsuario(){
 		return $this->nivelusuario;
 	}
-	
+
 	public function uploadFile($req){
 		$file=$req["file"]["name"];
 		$termfilearr=explode(".",$file);
@@ -1737,7 +1738,7 @@ class xsqlart{
 	//////////////////////////////////////////////////////////////////////
 	function LoginEncripted($usuariovl,$clavevl,$cifrado){
 		//realizar la consulta de login
-		$conn=$this->getIDConn();	
+		$conn=$this->getIDConn();
 		//realizar la consulta de login
 		$camponom=$this->nomlogin;
 		$clavenom=$this->clavelogin;
@@ -1754,13 +1755,13 @@ class xsqlart{
 			}
 		}
 	}
-	
+
 	function setCollate($collate){
 		$this->collationbd=$collate;
 	}
 
 	function setChrSet($charset){
-		$this->charsetbd=$charset;	
+		$this->charsetbd=$charset;
 	}
 
 	function getCollate(){
@@ -1768,15 +1769,15 @@ class xsqlart{
 	}
 
 	function getChrSet(){
-		return $this->charsetbd;	
+		return $this->charsetbd;
 	}
-	
+
 	function createDB($bd){
 		//realizar la asignacion de conexion
 		$conn=$this->getIDConn();
 		$charset=$this->charsetbd;
 		$collate=$this->collationbd;
-				
+
 		if($conn!=''){
 			if($charset!=''){
 				if($collate!=''){
@@ -1806,10 +1807,10 @@ class xsqlart{
 		while (false !== ($filename = readdir($dh))) {
 		    $files[] = $filename;
 		}
-		
+
 		sort($files);
 		rsort($files);
-		
+
 		return $files;
 	}
 
@@ -1823,7 +1824,7 @@ class xsqlart{
 		rsort($files);
 		print_r($files);
 	}
-	
+
 	//TABLA CAMPOS VALUES Mejorada!!!!!!!!!!!!!!!!!!!!!!!!!...y Funciona!
 	function InsertInto_str(){
 		$conn=$this->getIDConn();
@@ -1845,7 +1846,7 @@ class xsqlart{
 		    		$valoresins[]=$argulist[$u];
 					$this->numvalins++;
 		    	}
-		    	
+
 		    	if($retfunc==0){
 		    		$camposins[]=$argulist[$u];
 		    		$this->numcamins++;
@@ -1865,7 +1866,7 @@ class xsqlart{
 						break;
 					}
 				}
-				
+
 		    	for($r=0;$r<=$this->numvalins;$r++){
 					if($r<($this->numvalins-1)){
 						$selins.="'".$valoresins[$r]."',";
@@ -1888,7 +1889,7 @@ class xsqlart{
 			$this->nderror="ERROR -1: NO HAY CONEXION";
 	    }
 	}
-	
+
 	function isCampo($tabla,$campo){
 		$fieldsa=array();
 		$conn=$this->getIDConn();
@@ -1899,23 +1900,23 @@ class xsqlart{
 			else{
 				return -1;
 			}
-			
+
 			$query="SELECT * FROM ".$tabla;
-			
+
 			if($query!=''){
 				$pedaux=mysqli_query($conn,$query);
 			}
 			else{
 				$pedaux=mysqli_query($conn,$this->lastcons);
 			}
-			
+
 			if($pedaux){
 				if($query!=''){
 					$this->lastcons=$query;
 					$this->rowarray[$this->rowcont]=mysqli_num_rows($pedaux);
 					$numfields=mysqli_num_fields($pedaux);
 
-					
+
 					for($i=0;$i<$numfields;$i++){
 						$fieldsa[]=mysqli_field_name($pedaux,$i);
 					}
@@ -1925,7 +1926,7 @@ class xsqlart{
 							break;
 						}
 					}
-					
+
 					if(	$camporesult!=''){
 						return;
 					}
@@ -1938,24 +1939,24 @@ class xsqlart{
 					$this->rowarray[$this->rowcont]=mysqli_num_rows($pedaux);
 					$numfields=mysqli_num_fields($pedaux);
 
-					
+
 					for($i=0;$i<$numfields;$i++){
 						$fieldsa[]=mysqli_field_name($pedaux,$i);
 					}
-					
+
 					for($i=0;$i<$numfields;$i++){
 						if($fieldsa[$i]==$campo){
 							$camporesult=$fieldsa[$i];
 							break;
 						}
 					}
-					
+
 					if(	$camporesult!=''){
 						return;
 					}
 					else{
 						return -1;
-					}			
+					}
 				}
 			}
 			else{
@@ -1970,13 +1971,13 @@ class xsqlart{
     /**************************************************************************
 	 * 																		  *
 	 *                                   SEGURIDAD							  *
-	 *																		  * 
+	 *																		  *
 	 * 																		  *
 	 * ************************************************************************/
 	public function defConst($nombre,$valor){
 		define($nombre,$valor);
 	}
-	
+
 	public function genClaveValid(){
 		$patron="/[A-Z]{4}\d{4}[a-z]{4}[A-Z]{2}\D{4}/";
 		$cadena='';
@@ -1985,34 +1986,34 @@ class xsqlart{
 			$num=rand(65,90);
 			$cadena=$cadena.chr($num);
 		}
-		
+
 		for($i=1;$i<=4;$i++){
 			//numeros
 			$num=rand(48,57);
 			$cadena=$cadena.chr($num);
 		}
-		
+
 		for($i=1;$i<=4;$i++){
 			//letras minusculas
 			$num=rand(97,122);
 			$cadena=$cadena.chr($num);
 		}
-		
+
 		for($i=1;$i<=2;$i++){
 			//letras MAYUSCULAS
 			$num=rand(65,90);
 			$cadena=$cadena.chr($num);
 		}
-		
+
 		for($i=1;$i<=4;$i++){
 			//Caracteres especales
 			$num=rand(33,125);
 			$cadena=$cadena.chr($num);
 		}
-		
+
 		return $cadena;
 	}
-	
+
 	public function setPreClave($nombre){
 		$this->prefijoclv=$nombre;
 	}
@@ -2025,7 +2026,7 @@ class xsqlart{
 			return -1;
 		}
 	}
-	
+
 	public function genHashREG(){
 		$cadena=$this->getPreClave();
 		if($cadena!=''){
@@ -2034,28 +2035,28 @@ class xsqlart{
 				$num=rand(65,90);
 				$cadena=$cadena.chr($num);
 			}
-			
+
 			for($i=1;$i<=2;$i++){
 				//numeros
 				$num=rand(48,57);
 				$cadena=$cadena.chr($num);
 			}
-			
+
 			for($i=1;$i<=3;$i++){
 				//Caracteres especiales
 				$num=rand(33,125);
 				$cadena=$cadena.chr($num);
 			}
-			
+
 			$cadena=md5($cadena);
-			
+
 			return $cadena;
 		}
 		else{
 			return -1;
 		}
 	}
-	
+
 	public function genHash($cantchar){
 		$cadena='';
 		for($i=1;$i<=$cantchar;$i++){
@@ -2078,8 +2079,8 @@ class xsqlart{
 		$resd=$this->hashcadalgo($algor,$cadena);
 		return $resd;
 	}
-	public function cnvIdentityHTML($cadena){ 
-        return str_replace(array("á","é","í","ó","ú","ñ","Á","É","Í","Ó","Ú","Ñ"),array("&aacute;","&eacute;","&iacute;","&oacute;","&uacute;","&ntilde;","&Aacute;","&Eacute;","&Iacute;","&Oacute;","&Uacute;","&Ntilde;"), $cadena);     
+	public function cnvIdentityHTML($cadena){
+        return str_replace(array("á","é","í","ó","ú","ñ","Á","É","Í","Ó","Ú","Ñ"),array("&aacute;","&eacute;","&iacute;","&oacute;","&uacute;","&ntilde;","&Aacute;","&Eacute;","&Iacute;","&Oacute;","&Uacute;","&Ntilde;"), $cadena);
     }
 	public function genID(){
 		//Crea una clave de 128 caracteres
@@ -2117,23 +2118,23 @@ class xsqlart{
 		}
 	}
 	///////////////WRITE OPERATIONS MESSAGES INTO A FILE
-	public function writeOperMsg($mensaje){
+	public function appendOperMsg($mensaje,$tipocambio,$usuario){
+		$header=date("d-m-Y H:i:s")."--- ";
+		$mensajecomp=$header.$usuario."-->".$tipocambio."->".$mensaje."\r\n";
+		$this->writemsg($mensajecomp);
+		return;
+	}
+	public function writemsg($mensaje){
 		$archivo=fopen(XSQLART_OPERATIONS_FILE,'a');
 		if($archivo){
 			fwrite($archivo,$mensaje);
-			fclose($archivo);	
+			fclose($archivo);
 			return;
 		}
 		else{
 			return -1;
 		}
 	}
-	public function appendOperMsg($mensaje,$tipocambio,$usuario){
-		$header=date("d-m-Y H:i:s")."--- ";
-		$mensajecomp=$header.$usuario."-->".$tipocambio."->".$mensaje."\r\n";
-		$this->writeOperMsg($mensajecomp);
-		return;
-	}	
 	//Funciones Generales para obtener datos del dominio-HOSTING///////////////////////////////////////////////////////
 	public function getDomain(){
 		return $_SERVER["SERVER_NAME"];
