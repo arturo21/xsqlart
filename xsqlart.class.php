@@ -778,11 +778,12 @@ class xsqlart{
 									$this->appendOperMsg("Se ha hecho un SELECT. Filas obtenidas=".$this->getRows(),"DB","root");
 								}
 							}
+							return 10;
 						}
 						$this->appendOperMsg("Saliendo de consulta...","DB","root");
 						$this->numcons++;
 						$this->querycont++;
-						return;
+						return 20;
 					}
 				}
 				else{
@@ -790,10 +791,10 @@ class xsqlart{
 						$this->setError(mysqli_error());
 						$this->appendOperMsg("Error Consulta ".$this->getError(),"DB","root");
 						$this->printCad("ERROR DE CONEXION ".$this->getError());
-						return -15;
+						return -10;
 					}
 					else{
-						return;
+						return 10;
 					}
 				}
 			}
