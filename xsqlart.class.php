@@ -779,6 +779,7 @@ class xsqlart{
 								}
 							}
 						}
+						$this->appendOperMsg("Saliendo de consulta...","DB","root");
 						$this->numcons++;
 						$this->querycont++;
 						return;
