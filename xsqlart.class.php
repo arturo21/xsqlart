@@ -810,7 +810,6 @@ class xsqlart{
 			return -1;
 		}
 	}
-
 	function updateNumRows($rwosn){
 		if($rwosn!='' && $this->rowarray[$this->rowcont]!=''){
 			if($this->rowarray[$this->rowcont]!=$rwosn){
