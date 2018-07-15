@@ -768,7 +768,7 @@ class xsqlart{
 							$consfinal=trim($consarr[0]);
 							if($consfinal=='INSERT'){
 								$pedido=$this->getLastQuery();
-								$this->appendOperMsg("ID Ultimo Query=".$pedido,"DB","root");
+								$this->appendOperMsg("ID Ultimo Query=".$uinsert,"DB","root");
 								$uinsert=mysqli_insert_id($conn);
 								$this->setIDInsert($uinsert);
 								$this->appendOperMsg("ID Ultimo INSERT".$uinsert,"DB","root");
