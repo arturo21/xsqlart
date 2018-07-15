@@ -787,15 +787,11 @@ class xsqlart{
 					}
 				}
 				else{
-					if(mysqli_error()){
-						$this->setError(mysqli_error());
-						$this->appendOperMsg("Error Consulta ".$this->getError(),"DB","root");
-						$this->printCad("ERROR DE CONEXION ".$this->getError());
-						return -10;
-					}
-					else{
-						return 10;
-					}
+					$this->setError(mysqli_error($conn));
+					$this->appendOperMsg("Error Consulta ".$this->getError(),"DB","root");
+					$this->printCad("ERROR: ");
+					$this->printCad($this->getError());
+					return -10;
 				}
 			}
 		mysqli_free_result();

@@ -1,5 +1,6 @@
 <?php
-//SOFTWARE ABSTRACTION LAYER ARTOS 
+//SOFTWARE ABSTRACTION LAYER ARTOS
+// Capa que va a funcionar como shortcuts de la función system de php. Sólo para servidores Linux
 	/*
 	 * 0: MkDir (Crear Directorio) (HECHO)
 	 * 1: Chgrp	(Cambiar Grupo)(HECHO)
@@ -11,7 +12,7 @@
 	 * 7: InstPaq  (Instalar paquete)
 	 * 8: Rempaq (Remover paquete)
 	 * 81: Shpaq (Buscar paquete)
-	 * 82: Mkpaq (Crear paquete) 
+	 * 82: Mkpaq (Crear paquete)
 	 * 9 rm (remove directorio(s) o archivo(s))
 	 * 10: ls (listar directorios o archivos) (HECHO)
 	 * 11: dir (listar directorios o archivos) (HECHO)
@@ -58,20 +59,23 @@ class sal{
 	protected $cantllamadas;
 	protected $cantfunciones;
 	protected $usuario;
-	protected $promptd="ArtOS";
+	protected $promptd="SAL";
 	protected $diractual;
+	protected $usractual;
 	//Variables para ASM de ARTOS"xsqlart.class.php"
 	//llamada al nucleo para ejecucion va a ser EXEC();=0x80h
 	protected $args1;
 	protected $args2;
 	protected $ordenum;
+
+
 	function setUsr($usur){
 		$this->usuario=$usur;
 		return 0;
 	}
 	function getUsr(){
 		if($this->usuario!=''){
-			return $this->usuario; 
+			return $this->usuario;
 		}
 		else{
 			return -1;
@@ -119,11 +123,11 @@ class sal{
 	}
 	function getDir(){
 		if($this->diractual!=''){
-			return $this->diractual; 
+			return $this->diractual;
 		}
 		else{
 			$this->diractual=file_get_contents("directorio_actual.txt");
-			return $this->diractual; 
+			return $this->diractual;
 		}
 	}
 	function setOrder($ordenac){
@@ -137,7 +141,7 @@ class sal{
 	}
 	function getOrder(){
 		if($this->ordenum!=''){
-			return $this->ordenum; 
+			return $this->ordenum;
 		}
 		else{
 			return -1;
@@ -145,11 +149,11 @@ class sal{
 	}
 	function showUsr(){
 		if($this->usuario!=''){
-			$this->printCall($this->usuario); 
+			$this->printCall($this->usuario);
 		}
 		else{
 			return -1;
-		}	
+		}
 	}
 	function setPrompt($prompt){
 		$this->promptd=$prompt;
@@ -157,7 +161,7 @@ class sal{
 	}
 	function getPrompt(){
 		if($this->promptd!=''){
-			return $this->promptd; 
+			return $this->promptd;
 		}
 		else{
 			return -1;
@@ -165,7 +169,7 @@ class sal{
 	}
 	function Strcallback($cadena){
 		if($cadena!=''){
-			$this->Strcall($cadena);		
+			$this->Strcall($cadena);
 		}
 		else{
 			return -1;
@@ -177,7 +181,7 @@ class sal{
 		}
 	}
 	public function callback($call){
-		$this->call($call);	
+		$this->call($call);
 	}
 	function call($numcal){
 		if($this->existsCall($numcal)==0){
@@ -190,54 +194,54 @@ class sal{
 	////////////////////ASM DE ARTOS//////////////////////////
 	function AddToStack($registro,$valor){
 		if($this->IsValInRegistry()!=0){
-		
+
 		}
 		else{
 			return -1;
 		}
 	}
-	
+
 	function RmToStack(){
 		if($this->IsValInRegistry()==0){
-		
+
 		}
 		else{
 			return -1;
 		}
 	}
-	
+
 	function pop($registro){
 		if($this->IsValInRegistry()==0){
-		
+
 		}
 		else{
 			return -1;
 		}
 	}
-	
+
 	function push($registro){
 		if($this->IsValInRegistry()==0){
-		
+
 		}
 		else{
 			return -1;
 		}
 	}
-	
+
 	 function IsValInRegistry($val){
 		//devuelve el valor del registro si esta lleno
 	}
-	
+
 	 function IsRegistryEmpty($val){
 		//dvuelve si el registro esta vacio o no
 	}
-	
+
 	 function callSystem(){
-		
+
 	}
 	public function deleteFile($enlacefile){
 		// error -1 la variable está vacía
-		 // error -2 el archivo no existe 
+		 // error -2 el archivo no existe
 		 // error -3 no se pudo eliminar el archivo, devuelve array de errores
 		if(!empty($enlacefile)){
 			if(file_exists($enlacefile)){
@@ -255,7 +259,7 @@ class sal{
 		else{
 			return -1;
 		}
-	}	
+	}
 	 function sistema($cadena){
 		if($cadena!=''){
 			$this->commands($cadena);
@@ -269,18 +273,18 @@ class sal{
 	 * 7: InstPaq  (Instalar paquete)
 	 * 8: Rempaq (Remover paquete)
 	 * 81: Shpaq (Buscar paquete)
-	 * 82: Mkpaq (Crear paquete) 
+	 * 82: Mkpaq (Crear paquete)
 	 * */
 	function comprime_varios_zip($directorio){
-		
+
 	}
 	function comprime_uno_zip($directorio){
-		
+
 	}
 	function descomprimezip($directorio){
-		
+
 	}
-	
+
 	function installpaq($directorio,$paquete){
 		/*
 		 * Encontrar en la carpeta que se descomprima
@@ -292,17 +296,17 @@ class sal{
 		 * bd_carpeta.sql
 		 */
 	}
-	
+
 	function selectpaq($paquete){
-		
+
 	}
-	
+
 	function searchpaq($paquete){
-		
+
 	}
-	
+
 	function removepaq($paquete){
-		
+
 	}
 	////////////////////////////////////////////////////////////////////////////////////
 	 function commands($cadena){
@@ -314,7 +318,7 @@ class sal{
 			$args=$this->passParser($cadena);
 			if($args[0]=='dir' || $args[0]=='ls'){
 				if($args[1]!=''){
-					$this->dir($args[1]);				
+					$this->dir($args[1]);
 				}
 				else{
 					$direc=$this->getDir();
@@ -392,7 +396,7 @@ class sal{
 						$coincde[3]=str_replace(" ","",$coincde[3]);
 						//$coincde[3]=str_replace(",","\n",$coincde[3]);
 						$variables=$coincde[3];
-						//str_replace ( mixed $search , mixed $replace , mixed $subject [, int &$count ] ) 
+						//str_replace ( mixed $search , mixed $replace , mixed $subject [, int &$count ] )
 						$vars=explode(",",$variables);
 						//validacion de las variables, ver si todas tienen el @}
 						for($w=1;$w<=(count($vars)-1);$w++){
@@ -404,17 +408,17 @@ class sal{
 								$this->writeCall(" Error de sintaxis, variable: ".$vars[$w]."\n");
 							}
 						}
-						
-						
+
+
 						if($w==(count($vars)-1)){
-							
+
 						}
 					}
 				}
 				else{
 					$this->writeCall("\nFALTA UN ARGUMENTO\n");
 				}
-			}			
+			}
 			//VARIABLES DE ENTORNO
 			elseif(preg_match("/^(@[a-z]*)(=|<|>|<=|>=|!=)(@[a-z]*|\w|[A-Za-z0-9-_\"\']{1}\w*[A-Za-z0-9-_\"\']{1})/",$args[0],$coincde)){
 				if($coincde[0]!=''){
@@ -430,7 +434,7 @@ class sal{
 				}
 			}
 			//OPERACIONES MATEMATICAS CON NUMEROS SIN VARIABLES
-			//"/^[\$][\(]([0-9\.]{1,})+([\+\*\-\/])[\)][;]$/" 
+			//"/^[\$][\(]([0-9\.]{1,})+([\+\*\-\/])[\)][;]$/"
 			// acepta $(23.32*-/+)
 			elseif(preg_match("/^[\$][\(]((([0-9\.]{1,})+([\+\-\/\*]))+([a-z@0-9\.]{1,})*)[\)][;]$/",$args[0],$coincde)){
 				if($coincde[0]!=''){
@@ -450,7 +454,7 @@ class sal{
 							$cadena=$coincde[0]."=".$valorVal;
 							$this->writeCall($cadena);
 						}
-					}		
+					}
 				}
 			}
 			elseif($args[0]=='vali'){
@@ -492,7 +496,7 @@ class sal{
 							return 0;
 						}
 					}
-					
+
 					if($encontrado==0){
 						return -1;
 					}
@@ -509,7 +513,7 @@ class sal{
 			return -4;
 		}
 	}
-	
+
 	function seekVar_return($var){
 		//Se almacena el archivo en un Array
 		$file=file("variables.txt");
@@ -529,7 +533,7 @@ class sal{
 							return $i;
 						}
 					}
-					
+
 					if($encontrado==0){
 						return -34;
 					}
@@ -546,7 +550,7 @@ class sal{
 			return -4;
 		}
 	}
-	
+
 	function seekVar_val($var){
 		$fp=fopen("variables.txt","r");
 		if($fp){
@@ -562,7 +566,7 @@ class sal{
 							return $partes[1];
 						}
 					}
-					
+
 					if($encontrado==0){
 						return -35;
 					}
@@ -579,8 +583,8 @@ class sal{
 			return -4;
 		}
 	}
-	
-	function defineVar($var,$valor){		
+
+	function defineVar($var,$valor){
 		$fp=fopen("variables.txt","r");
 		if($fp){
 			$contenido=file("variables.txt");
@@ -600,7 +604,7 @@ class sal{
 			$this->resetVar($var,$valor);
 		}
 	}
-	
+
 	function rewriteVar($arrayVar){
 		$fp=fopen("variables.txt","w");
 		if($fp){
@@ -612,13 +616,13 @@ class sal{
 			}
 		}
 		if(fclose($fp)){
-			return 0;		
+			return 0;
 		}
 		else{
 			return -36;
 		}
 	}
-	
+
 	function resetVar($var,$valor){
 		if($this->seekVar($var)==0){
 			$file_arr=file("variables.txt");
@@ -637,7 +641,7 @@ class sal{
 		$prompt=$this->getPrompt();
 		$this->printCall($prompt."> ");
 	}
-	
+
 	function passParser($cadena){
 		$coincrev=array();
 		//expresiones regulares para cada una de las llamadas al sistema (FORMATO)
@@ -658,13 +662,13 @@ class sal{
 				$patronif='\{if ([a-z0-9]+)\}([^\{]*)(?:\{else\})?([^\{]*)\{/if\}';
 				if(count($argscad)>2){
 					if($argscad[2]!=''){
-						return $argscad;				
+						return $argscad;
 					}
 					else{
 						return -1;
 					}
 				}
-				
+
 				if(preg_match_all($patron1,$cadena,$coinc)==0){
 					$coincrev[0]=$coinc[0][0];
 					$coincrev[1]=$coinc[0][1];
@@ -683,24 +687,24 @@ class sal{
 							echo("NO EXISTE ESE COMANDO");
 							return -1;
 						}
-					}					
+					}
 				}
-				
+
 				if($argscad!=''){
-					return $argscad;				
+					return $argscad;
 				}
 				else{
 					return -1;
 				}
 			}
 	}
-	
+
 	 function existsCall($numcal){
 		//funcion que valida si existe esa llamada a la API
 	}
-	
+
 	/////////////LLAMADAS AL SISTEMA///////////////////////////////////////////////////
-	
+
 	 function printCall($cadena){
 		echo("\n\n".$cadena);
 		return 0;
@@ -708,15 +712,15 @@ class sal{
 
 	 function writeCall($cadena){
 		echo("\n\n".$cadena);
-		return 0;		
+		return 0;
 	}
-	
+
 	 function mkdir_art($direcotrio){
 		if(!file_exists($direcotrio)){
 			mkdir($direcotrio,0777);
 		}
 	}
-	
+
 	 function chgroup_art($direcotrio,$grupo){
 		if(!file_exists($direcotrio)){
 			chgrp($direcotrio,$grupo);
@@ -728,7 +732,7 @@ class sal{
 			chmod($direcotrio,$permisos);
 		}
 	}
-	
+
 	 function mkfile($direcotrio){
 		$op=fopen($direcotrio,"w+");
 		if($op){
@@ -738,7 +742,7 @@ class sal{
 			return -1;
 		}
 	}
-	
+
 	function dir($directorio){
 		if($directorio!=''){
 			$i=0;
@@ -766,7 +770,7 @@ class sal{
 			$this->dir($this->getDir());
 		}
 	}
-	
+
 	function ls($directorio){
 		if($directorio!=''){
 			$i=0;
@@ -794,15 +798,15 @@ class sal{
 			$this->writeCall("2l.ERROR, NO ES UN DIRECTORIO: ".$directorio."\n\n");
 		}
 	}
-	
+
 	function clear(){
 		$this->writeCall("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 	}
-	
+
 	function cd($dir){
 		$this->setDir($dir);
 	}
-	
+
 	function cds($orden){
 		$this->setDir($orden);
 		$dirac=$this->getDir();
