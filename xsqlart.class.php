@@ -759,6 +759,7 @@ class xsqlart{
 			$this->queryarray[$this->querycont]=$querytmp;
 			$this->setLastQuery($querytmp);
 			$this->appendOperMsg("Registrando ID ultima consulta...","DB","root");
+			$this->appendOperMsg("Completado.","DB","root");
 			if($querytmp){
 					if($this->getLastQuery()!=''){
 						if($this->getLastQueryStatement()!=''){
