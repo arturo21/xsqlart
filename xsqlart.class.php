@@ -13,7 +13,7 @@
  * 2. FIXED FUNCION Execute (FIXED: SOLO extrae filas si hay un SELECT en el QUERY)
  * 2. FIXED FUNCION Execute (FIXED: getRows)
  * 2. FIXED FUNCION Execute (FIXED: functions within Execute)
- * 2. FIXED FUNCION Execute (FIXED: MANEJA MAS DE UNA COSULTA anidada SIN INSTANCIAR UN NUEVO OBJETO:: SINGLETON)
+ * 2. FIXED FUNCION Execute (FIXED: MANEJA MAS DE UNA CONSULTA anidada SIN INSTANCIAR UN NUEVO OBJETO:: SINGLETON)
  * 2. FIXED FUNCION Execute (FIXED: Reload no devuelve el socket, no hace falta asignarse a una variable)
  * 3. ADDED FUNCION WHERE Y LIKE CON EXPRESIONES REGULARES
  * 4. FIXED SINGLETON:: (Se comporta como tal pero no tiene el constructor...).
@@ -46,7 +46,6 @@
  * 27. ADDED Funcion saveSetConex (Guarda los datos y conecta. en euna sola línea)
  * 28. BUGFIXED PHP 7 compatibility;
 */
-error_reporting("E_ALL");
 define("XSQLART_OPERATIONS_FILE", "operations.log");
 define("XSQLART_PHP_EXTENSION", ".php");
 define("XSQLART_SQL_EXTENSION", ".sql");
