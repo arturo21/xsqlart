@@ -100,9 +100,7 @@ $dbn->MailSend($sender,$subject,$message,$destino,$formato);
 ## Si te gustó y deseas apoyarme, <br /> 
 
 # Haz Click en uno de los enlaces siguientes: 
-
--- Sellfy -- <br />
-[DONATE](https://sellfy.com/p/U87B/) <br />
+<br />
 -- Paypal -- <br />
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HREGZSCAPDECU) 
 <br />
