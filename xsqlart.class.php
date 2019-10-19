@@ -1,9 +1,19 @@
 <?php
 /*
-	Copyright (c) 2017 Arturo Vásquez Soluciones de Sistemas 2716
-	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-	The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  Copyright (C) 2019 Arturo Vasquez Soluciones Web.
+  Todos los derechos reservados.
+
+  La redistribución y uso en formatos fuente y binario están permitidas
+  siempre que el aviso de copyright anterior y este párrafo son
+  duplicado en todas esas formas y que cualquier documentación,
+  materiales de publicidad y otros materiales relacionados con dicha
+  distribución y uso reconocen que el software fue desarrollado
+  por el Arturo Vasquez Soluciones Web. El nombre de
+  Arturo Vasquez Soluciones Web No se puede utilizar para respaldar o promocionar productos derivados
+  de este software sin el permiso previo por escrito.
+  ESTE SOFTWARE SE PROPORCIONA '' tal cual '' Y SIN EXPRESA O
+  Garantías implícitas, incluyendo, sin limitación, los implicados
+  GARANTÍAS DE COMERCIALIZACIÓN Y APTITUD PARA UN PROPÓSITO PARTICULAR.
 */
 /* RELEASE NOTES
  * CHANGELOG
@@ -45,6 +55,7 @@
  * 26. BUGFIX iteración infinita al realizar select dentro de un while - agregando array de numeros de filas y consultas realizadas
  * 27. ADDED Funcion saveSetConex (Guarda los datos y conecta. en euna sola línea)
  * 28. BUGFIXED PHP 7 compatibility;
+ * 29. ADD Function salitize or functions to sanitize a string
 */
 define("XSQLART_OPERATIONS_FILE", "operations.log");
 define("XSQLART_PHP_EXTENSION", ".php");
@@ -55,6 +66,7 @@ define("XSQLART_XML_EXTENSION", ".xml");
 define("XSQLART_PERL_EXTENSION", ".pl");
 define("XSQLART_ROOT_DIR", "/");
 define("XSQLART_MYSQL_PORT", "3306");
+
 class xsqlart{
 	protected $numcons=0;
 	////////ARRAY DE NUMEROS DE FILAS/////////
@@ -137,6 +149,23 @@ class xsqlart{
 	protected $sqlprepared_arr=array();
 	//Función para conectar a BD/////////////////////////////////////
 	////////////////////////////////////////////////////////////////
+	
+	///Condition 1 – Presence of a static member variable
+	private static $_instance = null;
+	
+	///Condition 2 – Locked down the constructor
+	private function __construct() { } //Prevent any oustide instantiation of this class
+	
+	///Condition 3 – Prevent any object or instance of that class to be cloned
+	private function __clone() { } //Prevent any copy of this object
+	
+	///Condition 4 – Have a single globally accessible static method
+	public static function getInstance(){
+		if( !is_object(self::$_instance) ) //or if( is_null(self::$_instance) ) or if( self::$_instance == null )
+		self::$_instance = new xsqlart();
+		return self::$_instance;
+	}
+	
 	public function setPHPVersion($phpv){
 		$this->phpversion=$phpv;
 		return;
@@ -270,6 +299,31 @@ class xsqlart{
 		}
 		return;
 	}
+	public function run(){
+		//pasa el control al programador. Devuelve la instancia de la clase
+		if(!defined('SERVIDOR_BD')) {
+		    die("VAR SERVIDOR_BD NO DEFINIDO!");
+		}
+		if(!defined('USUARIO_BD')) {
+		    die("VAR USUARIO_BD NO DEFINIDO!");
+		}
+		if(!defined('CLAVE_BD')) {
+		    die("VAR CLAVE_BD NO DEFINIDO!");
+		}
+		if(!defined('NOMBRE_BD')) {
+		    die("VAR NOMBRE_BD NO DEFINIDO!");
+		}
+		try{
+			//Conectar a la base de datos ADMIN
+			$this->setCodif('utf8');
+			$this->saveSetConex(USUARIO_BD,CLAVE_BD,SERVIDOR_BD,NOMBRE_BD);
+			echo("CONECTADO!");
+			return $dbn;
+		}
+		catch(Exception $e){
+			echo($e);
+		}
+	}
 	public function setConexSocket($socket){
 		$tmp=$socket;
 		if(!$tmp){
@@ -357,11 +411,11 @@ class xsqlart{
 		}
 	}
 	/****************************************************************************************************
-	 * 																									*
-	 * 																									*
-	 * 											START DATA COLECTOR FUNCTIONS							*
-	 * 																									*
-	 * 																									*
+	 * 																						                                                			*
+	 * 													                                                												*
+	 * 											START DATA COLECTOR FUNCTIONS	                                  						*
+	 * 																								                                                 	*
+	 * 										                                                															*
 	 * **************************************************************************************************/
 	public function seekDataColector($nombre){
 		if($nombre!=''){
@@ -795,6 +849,29 @@ class xsqlart{
 				}
 			}
 		mysqli_free_result();
+	}
+	public function insert($table,$fields){
+		$conn=$this->getIDConn();
+		$numargs = func_num_args();
+	    $argulist = func_get_args();
+	    $camposins=array();
+	    $valoresins=array();
+	    $camposreal=array();
+	    $fieldsint;
+		
+	    if(!is_array($fields)){
+	    	die("fields var MUST BE an ARRAY!");
+	    }
+		/*
+		 * array(
+		 * 'field1'=>$val1
+		 * )
+		 * */
+		$insertstr="INSERT INTO ".$table."() VALUES()";
+		foreach ($fields as $key => $value) {
+			echo($key);
+			echo($value);
+		}
 	}
 	public function getRows(){
 		$result=$this->getLastQuery();
@@ -1753,71 +1830,6 @@ class xsqlart{
 		print_r($files);
 		rsort($files);
 		print_r($files);
-	}
-
-	//TABLA CAMPOS VALUES Mejorada!!!!!!!!!!!!!!!!!!!!!!!!!...y Funciona!
-	function InsertInto_str(){
-		$conn=$this->getIDConn();
-		$numargs = func_num_args();
-	    $argulist = func_get_args();
-	    $camposins=array();
-	    $valoresins=array();
-	    $camposreal=array();
-	    $this->numvalins=0;
-	    $this->numcamins=0;
-	    if($conn){
-	    	//ver si existe campo
-	    	$tablai=$argulist[0];
-	    	for($u=1;$u<$numargs;$u++){
-    			$base=$this->bd;
-				$retfunc=$this->isCampo($tablai,$argulist[$u]);
-				///////////RETFUNC (lo que devuelve);
-		    	if($retfunc==-1){
-		    		$valoresins[]=$argulist[$u];
-					$this->numvalins++;
-		    	}
-
-		    	if($retfunc==0){
-		    		$camposins[]=$argulist[$u];
-		    		$this->numcamins++;
-		    	}
-	    	}
-	    	if($this->numvalins==$this->numcamins){
-		    	$selins="INSERT INTO ".$tablai."(";
-				for($r=0;$r<=$this->numcamins-1;$r++){
-					if($r<($this->numcamins-1)){
-						$selins.=$camposins[$r].",";
-					}
-					elseif($r==($this->numcamins)){
-						$selins.=$camposins[$r].')';
-					}
-					else{
-						$selins.=$camposins[$r].') VALUES(';
-						break;
-					}
-				}
-
-		    	for($r=0;$r<=$this->numvalins;$r++){
-					if($r<($this->numvalins-1)){
-						$selins.="'".$valoresins[$r]."',";
-					}
-					elseif($r==($this->numvalins)){
-						$selins.=$valoresins[$r].')';
-					}
-					else{
-						$selins.="'".$valoresins[$r]."')";
-						break;
-					}
-				}
-				return $selins;
-	    	}
-	    	else{
-				$this->setError("La cantidad de campos y valores es desigual!");
-	    	}
-	    }
-	    else{
-			$this->nderror="ERROR -1: NO HAY CONEXION";
-	    }
 	}
 
 	function isCampo($tabla,$campo){
