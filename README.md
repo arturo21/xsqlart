@@ -83,7 +83,7 @@ if($dbn->Execute($qrysentence)){
 		'campo6',
 	),
 	array(
-		'perfil'=>'arturo'
+		'campo'=>'valor'
 	));
 ```
 
