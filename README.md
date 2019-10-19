@@ -30,7 +30,7 @@ $dbn->getPhpVersion();
 	//server
 	define("SERVIDOR_BD", "127.0.0.1");
 	//db name
-	define("NOMBRE_BD", "table");
+	define("NOMBRE_BD", "dbname");
 	//user db
 	define("USUARIO_BD", "user");
 	//password db
