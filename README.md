@@ -87,7 +87,7 @@ if($dbn->Execute($qrysentence)){
 	));
 ```
 
-## UPDATE
+## UPDATE -- args: table, fields='newvalue', [WHERE] -> optional
 ```php
 	$db->update(
 	'perfiles',
@@ -104,7 +104,7 @@ if($dbn->Execute($qrysentence)){
 	));
 ```
 
-## DELETE
+## DELETE -- args: table, WHERE
 ```php
 	$db->delete('perfiles',
 	array(
