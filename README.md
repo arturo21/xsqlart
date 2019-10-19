@@ -19,7 +19,7 @@
 
 ## Instanciar la clase
 ```php
-$dbn=new xsqlart();
+$dbn=xsqlart::getInstance();
 ```
 ## Obtener versión PHP
 ```php
