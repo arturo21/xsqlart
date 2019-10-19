@@ -850,6 +850,7 @@ class xsqlart{
 			}
 		mysqli_free_result();
 	}
+	//OPERACIONES CRUD
 	public function insert($table,$fields){
 		$conn=$this->getIDConn();
 		$numargs = func_num_args();
@@ -867,12 +868,195 @@ class xsqlart{
 		 * 'field1'=>$val1
 		 * )
 		 * */
-		$insertstr="INSERT INTO ".$table."() VALUES()";
-		foreach ($fields as $key => $value) {
-			echo($key);
-			echo($value);
+		$campos='';
+		$valores='';
+		$i=0;
+		foreach ($fields as $campo => $valor) {
+			if($i<(count($fields)-1)){
+				$campos.=$campo.",";
+				$valores.=$valor.",";
+			}
+			else{
+				$campos.=$campo;
+				$valores.=$valor;
+			}
+			$i++;
+		}
+		$insertstr="INSERT INTO ".$table."(".$campos.") VALUES(".$valores.")";
+		try{
+			//$this->Execute($insertstr);
+			echo($insertstr);
+		}
+		catch(Exception $e){
+			echo($e);
 		}
 	}
+	public function update($table,$fields,$where){
+		$conn=$this->getIDConn();
+		$numargs = func_num_args();
+	    $argulist = func_get_args();
+	    $camposins=array();
+	    $valoresins=array();
+	    $camposwh;
+	    $fieldsint;
+		$wherevar;
+		$whereval;
+		$wherestr='';
+		
+	    if(!is_array($fields)){
+	    	die("fields var MUST BE an ARRAY!");
+	    }
+		if(!is_array($where)){
+	    	die("where var MUST BE an ARRAY!");
+	    }
+		/*
+		 * array(
+		 * 'field1'=>$val1
+		 * )
+		 * */
+		$campos='';
+		$valores='';
+		$i=0;
+		foreach ($fields as $campo => $valor) {
+			if($i<(count($fields)-1)){
+				$campos.=$campo."=".$valor.", ";
+			}
+			else{
+				$campos.=$campo."=".$valor;
+			}
+			$i++;
+		}
+		$i=0;
+		foreach ($where as $wherevar => $whereval) {
+			$camposwh.=$wherevar."=".$whereval;
+			$i++;
+		}
+		$updatestr="UPDATE ".$table." SET ".$campos." WHERE ".$camposwh;
+		try{
+			//$this->Execute($insertstr);
+			echo($updatestr);
+		}
+		catch(Exception $e){
+			echo($e);
+		}
+	}
+	public function delete($table,$where){
+		$conn=$this->getIDConn();
+		$numargs = func_num_args();
+	    $argulist = func_get_args();
+	    $camposins=array();
+	    $valoresins=array();
+	    $camposwh;
+	    $fieldsint;
+		$wherevar;
+		$whereval;
+		$wherestr='';
+		
+		if(!is_array($where)){
+	    	die("where var MUST BE an ARRAY!");
+	    }
+		/*
+		 * array(
+		 * 'field1'=>$val1
+		 * )
+		 * */
+		$i=0;
+		foreach ($where as $wherevar => $whereval) {
+			$camposwh.=$wherevar."=".$whereval;
+			$i++;
+		}
+		$deletestr="DELETE FROM ".$table." WHERE ".$camposwh;
+		try{
+			//$this->Execute($insertstr);
+			echo($deletestr);
+		}
+		catch(Exception $e){
+			echo($e);
+		}
+	}
+	public function select($table,$fields){
+		//$where as optional
+		$conn=$this->getIDConn();
+		$numargs = func_num_args();
+	    $argulist = func_get_args();
+	    $camposins=array();
+	    $valoresins=array();
+	    $camposwh;
+	    $fieldsint;
+		$wherevar;
+		$whereval;
+		$wherestr='';
+		$haswhere=0;
+		if(!is_array($fields)){
+			if(!is_string($fields)){
+				if($fields!='*' || count($fields)<1){
+					die("<br>Tipo de variable no soportada!");
+				}
+			}
+		}
+		else{
+			if(is_array($argulist[2])){
+				$where=$argulist[2];
+				print_r($argulist[2]);
+				if(is_array($where)){
+					$haswhere=1;
+					$i=0;
+					foreach ($where as $wherevar => $whereval) {
+						$where.=$wherevar."=".$whereval;
+						if($i<(count($where)-1)){
+							$camposwh.=$wherevar."=".$whereval." AND ";
+						}
+						else{
+							$camposwh.=$wherevar."=".$whereval;
+						}
+						$i++;
+					}
+				}
+				else{
+					if(!is_array($where)){
+				    	die("where var MUST BE an ARRAY!");
+				    }
+				}
+				
+			}
+			/*
+			 * array(
+			 * 'field1'=>$val1
+			 * )
+			 * */
+			$campos='';
+			$valores='';
+			$i=0;
+			foreach ($fields as $campo => $valor) {
+				if($i<(count($fields)-1)){
+					$campos.=$valor.", ";
+				}
+				else{
+					$campos.=$valor;
+				}
+				$i++;
+			}
+			if($haswhere==1){
+				$wherestr=" WHERE ".$camposwh;
+			}
+			else{
+				$wherestr="";
+			}
+			
+			$selectstr="SELECT ".$campos." FROM ".$table.$wherestr;
+			try{
+				//$this->Execute($insertstr);
+				echo($selectstr);
+			}
+			catch(Exception $e){
+				echo($e);
+			}
+		}
+	}
+	/**************************************************************************/
+	public function sanitize_identity($cadena){
+        return str_replace(array("á","é","í","ó","ú","ñ","Á","É","Í","Ó","Ú","Ñ"),array("&aacute;","&eacute;","&iacute;","&oacute;","&uacute;","&ntilde;","&Aacute;","&Eacute;","&Iacute;","&Oacute;","&Uacute;","&Ntilde;"), $cadena);
+    }
 	public function getRows(){
 		$result=$this->getLastQuery();
 		if($result){
@@ -1593,54 +1777,6 @@ class xsqlart{
 		}
 	}
 
-	//Ejecuta dos sentencias SQL para seleccion e insercion de datos con validacion de filas
-	public function TwoSQLSentences($q1,$q2,$cond){
-		//ejecutar dos sentencias: una de seleccion y otra de insert o delete o update u otra select;
-		//0:FILAS==0
-		//1:FILAS>0
-		$condi=intval($cond);
-		switch ($condi) {
-			case '0':
-				if($this->Execute($q1)){
-					if($this->getRows()==0){
-						if($this->Execute($q2)){
-							$this->printCad("Registro procesado exitosamente");
-						}
-						else {
-							echo($this->getError());
-						}
-					}
-					else{
-						echo("No hay registros.");
-					}
-				}
-				else{
-					echo("Error en la consulta.");
-					echo($this->getError());
-				}
-				break;
-			case '1':
-				if($this->Execute($q1)){
-					if($this->getRows()>0){
-						if($this->Execute($q2)){
-							$this->printCad("Registro procesado exitosamente");
-						}
-						else {
-							echo($this->getError());
-						}
-					}
-					else{
-						echo("No hay registros.");
-					}
-				}
-				else{
-					echo("Error en la consulta.");
-					echo($this->getError());
-				}
-				break;
-		}
-	}
-
 	public function getNumCampos(){
 		return $this->numcampos;
 	}
@@ -2021,9 +2157,6 @@ class xsqlart{
 		$resd=$this->hashcadalgo($algor,$cadena);
 		return $resd;
 	}
-	public function cnvIdentityHTML($cadena){
-        return str_replace(array("á","é","í","ó","ú","ñ","Á","É","Í","Ó","Ú","Ñ"),array("&aacute;","&eacute;","&iacute;","&oacute;","&uacute;","&ntilde;","&Aacute;","&Eacute;","&Iacute;","&Oacute;","&Uacute;","&Ntilde;"), $cadena);
-    }
 	public function genID(){
 		//Crea una clave de 128 caracteres
 		$clavegen='';
