@@ -884,8 +884,8 @@ class xsqlart{
 		}
 		$insertstr="INSERT INTO ".$table."(".$campos.") VALUES(".$valores.")";
 		try{
-			//$this->Execute($insertstr);
-			echo($insertstr);
+			$this->Execute($insertstr);
+			//echo($insertstr);
 		}
 		catch(Exception $e){
 			echo($e);
@@ -933,8 +933,8 @@ class xsqlart{
 		}
 		$updatestr="UPDATE ".$table." SET ".$campos." WHERE ".$camposwh;
 		try{
-			//$this->Execute($insertstr);
-			echo($updatestr);
+			$this->Execute($insertstr);
+			//echo($updatestr);
 		}
 		catch(Exception $e){
 			echo($e);
@@ -967,8 +967,8 @@ class xsqlart{
 		}
 		$deletestr="DELETE FROM ".$table." WHERE ".$camposwh;
 		try{
-			//$this->Execute($insertstr);
-			echo($deletestr);
+			$this->Execute($insertstr);
+			//echo($deletestr);
 		}
 		catch(Exception $e){
 			echo($e);
@@ -1045,8 +1045,8 @@ class xsqlart{
 			
 			$selectstr="SELECT ".$campos." FROM ".$table.$wherestr;
 			try{
-				//$this->Execute($insertstr);
-				echo($selectstr);
+				$this->Execute($insertstr);
+				//echo($selectstr);
 			}
 			catch(Exception $e){
 				echo($e);
@@ -1056,6 +1056,18 @@ class xsqlart{
 	/**************************************************************************/
 	public function sanitize_identity($cadena){
         return str_replace(array("á","é","í","ó","ú","ñ","Á","É","Í","Ó","Ú","Ñ"),array("&aacute;","&eacute;","&iacute;","&oacute;","&uacute;","&ntilde;","&Aacute;","&Eacute;","&Iacute;","&Oacute;","&Uacute;","&Ntilde;"), $cadena);
+    }
+	public function sanitize_tags($cadena){
+        return strip_tags($cadena);
+    }
+	public function sanitize_slashes($cadena){
+        return stripslashes(stripslashes($cadena));
+    }
+	public function sanitize_whitespace($cadena){
+        return php_strip_whitespace($cadena);
+    }
+	public function sanitize($cadena){
+        return $this->sanitize_tags($this->sanitize_slashes($this->sanitize_identity($cadena)));
     }
 	public function getRows(){
 		$result=$this->getLastQuery();

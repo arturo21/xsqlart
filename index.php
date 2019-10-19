@@ -34,34 +34,11 @@
 			array(
 				'perfil'=>'arturo'
 			));
+			
 			$db->delete('perfiles',
 			array(
 				'perfil'=>'arturo'
 			));
-			
-			$db->insert('perfiles',array(
-			'campo1'=>'valor1',
-			'campo2'=>'valor2',
-			'campo3'=>'valor3',
-			'campo4'=>'valor4',
-			'campo5'=>'valor5',
-			'campo6'=>'valor6',
-			),
-			array(
-				'perfil'=>'arturo'
-			));
-			echo("<br><br>");
-			$db->select('perfiles',array(
-				'campo1',
-				'campo2',
-				'campo3',
-				'campo4',
-				'campo5',
-				'campo6',
-			),
-			array(
-				'perfil'=>'arturo'
-			));
 			echo("<br><br>");
 			$db->select('perfiles',array(
 				'campo1',
@@ -71,7 +48,14 @@
 				'campo5',
 				'campo6',
 			));
-			$db->select('perfiles',"asdasdasdasd",
+			$db->select('perfiles',array(
+				'campo1',
+				'campo2',
+				'campo3',
+				'campo4',
+				'campo5',
+				'campo6',
+			),
 			array(
 				'perfil'=>'arturo'
 			));
