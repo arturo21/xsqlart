@@ -55,6 +55,63 @@ if($dbn->Execute($qrysentence)){
 }
 ```
 
+## Operaciones CRUD Directas
+### SELECT -- args: table, fields, [WHERE] -> optional 
+```php
+	$db->select(
+	'perfiles',
+	array(
+		'campo1',
+		'campo2',
+		'campo3',
+		'campo4',
+		'campo5',
+		'campo6',
+	));
+```
+
+## Operaciones con WHERE
+```php
+	$db->select(
+	'perfiles',
+	array(
+		'campo1',
+		'campo2',
+		'campo3',
+		'campo4',
+		'campo5',
+		'campo6',
+	),
+	array(
+		'perfil'=>'arturo'
+	));
+```
+
+## UPDATE
+```php
+	$db->update(
+	'perfiles',
+	array(
+	'campo1'=>'valor1',
+	'campo2'=>'valor2',
+	'campo3'=>'valor3',
+	'campo4'=>'valor4',
+	'campo5'=>'valor5',
+	'campo6'=>'valor6',
+	),
+	array(
+		'campo'=>'valor'
+	));
+```
+
+## DELETE
+```php
+	$db->delete('perfiles',
+	array(
+		'campo'=>'valor'
+	));
+```
+
 ## Crear una consulta y extraer un array de datos
 ```php
 $qrysentence="SELECT * FROM tabla";
