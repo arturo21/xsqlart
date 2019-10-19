@@ -27,8 +27,19 @@ $dbn->getPhpVersion();
 ```
 ## Conectar a base de datos MySQL
 ```php
-$dbn->setCodif('utf8');
-$dbn->saveSetConex(USUARIO_BD,CLAVE_BD,SERVIDOR_BD,NOMBRE_BD);
+	//server
+	define("SERVIDOR_BD", "127.0.0.1");
+	//db name
+	define("NOMBRE_BD", "sistemapmod");
+	//user db
+	define("USUARIO_BD", "arturo");
+	//password db
+	define("CLAVE_BD", "Arat5uro");
+	
+	include("xsqlart.class.php");
+	
+	$db=xsqlart::getInstance();
+	$db->run();
 ```
 
 ## Crear una consulta simple
