@@ -317,7 +317,7 @@ class xsqlart{
 			//Conectar a la base de datos ADMIN
 			$this->setCodif('utf8');
 			$this->saveSetConex(USUARIO_BD,CLAVE_BD,SERVIDOR_BD,NOMBRE_BD);
-			echo("CONECTADO!");
+			//echo("CONECTADO!");
 			return $dbn;
 		}
 		catch(Exception $e){
@@ -1068,6 +1068,9 @@ class xsqlart{
     }
 	public function sanitize($cadena){
         return $this->sanitize_tags($this->sanitize_slashes($this->sanitize_identity($cadena)));
+    }
+	public function space2lines($cadena){
+        return str_replace(" ", "-", $cadena);
     }
 	public function getRows(){
 		$result=$this->getLastQuery();
@@ -1969,7 +1972,7 @@ class xsqlart{
 		$charset=$this->charsetbd;
 		$collate=$this->collationbd;
 
-		if($conn!=''){
+		if($conn!=''){ 
 			if($charset!=''){
 				if($collate!=''){
 					$q="CREATE DATABASE ".$bd." CHARACTER SET '".$charset."' COLLATE '".$collate."'";

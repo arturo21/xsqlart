@@ -165,9 +165,8 @@ $formato='html';
 $dbn->MailSend($sender,$subject,$message,$destino,$formato);
 ```
 
-# Si deseas apoyarme, 
-# Haz Click en el siguiente enlace: 
+### Si deseas colaborar, haz clic en el enlace abajo:
+### if do you like to to collab, you can do it by clicking the link below:
 ### --Paypal-- 
-[![paypal-btn-image-pay](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HREGZSCAPDECU)
+[![paypal-btn-image-pay](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/paypalme/avsolucionesweb)
 
-<br />
