@@ -1,40 +1,54 @@
-/* RELEASE NOTES
- * CHANGELOG
- * 1. FIXED FUNCION SetConex
- * 1. FIXED FUNCION SetConex (FIXED: validations DB selection)
- * 2. FIXED FUNCION Execute (FIXED: muestra si hay error en la consulta MySQL y escribe en un archivo de operaciones...)
- * 2. FIXED FUNCION Execute (FIXED: SOLO extrae filas si hay un SELECT en el QUERY)
- * 2. FIXED FUNCION Execute (FIXED: getRows)
- * 2. FIXED FUNCION Execute (FIXED: functions within Execute)
- * 2. FIXED FUNCION Execute (FIXED: MANEJA MAS DE UNA COSULTA anidada SIN INSTANCIAR UN NUEVO OBJETO:: SINGLETON)
- * 2. FIXED FUNCION Execute (FIXED: Reload no devuelve el socket, no hace falta asignarse a una variable)
- * 3. ADDED FUNCION WHERE Y LIKE CON EXPRESIONES REGULARES
- * 4. FIXED SINGLETON:: (Se comporta como tal pero no tiene el constructor...).
- * 5. FIXED ADDED soporte UTF8 para impresión o muesttra de datos
- * 6. FIXED ADDED Colectores de datos (Probados y funcionando :))
- * 7. FIXED ADDED Importacion de datos a MySQL mediante archivos CSV de excel
- * 8. FIXED ADDED Exportacion de BD MySQL Actual y una que sea especificada por el programador
- * 9. ADDED funciones de Fechas y conversion de fechas a Integer
- * 10. ADDED funcion de ExportCSV para exportar archivos a CSV
- * 11. ADDED funcion para ver el numero de campos de una tabla
- * 12. ADDED libreria seguridad.class.php (INCLUDED)
- * 13. DEPRECATED ConnectarBD_SC, ConectarBD
- * 14. FIXED Funciones para mostrar mensajes de error
- * 15. ADDED Funcion Historial LOG de errores
- * 16. ADDED Funciones varias, mejora en funcion Execute
- * 16. ADDED Funcion saveSettings, mejora en funcion Execute
- * 16. ADDED Funcion Reload, mejora en funcion Execute
- * 16. ADDED Funcion setConexSocket, mejora en funcion Execute
- * 16. ADDED Funcion encbase64, decbase64. Soporte para base64
- * 17. ADDED Cambio de sintaxis al invocar cada función, por modificacion de "return 0;" por "return;" para rapidez en codificacion
- * 18. FIXED ExportSQL Cambio de algoritmo
- * 19. DEPRECATED ExportSQL_dif
- * 20. ADDED Array de consultas y Array de filas 
- * 21. FIXED Funcion setConex
- * 23. FIXED CHANGED ImportCSV Cambio de algoritmo
- * 23. FIXED CHANGED Hacer referencia a funciones internas para reutilizar código
- * 24. INTEGRATED API para escritura de errores mediante archivo LOG (seguridad.class.php)
- * 25. ADDED HASH Support
- * 26. BUGFIX iteración infinita al realizar select dentro de un while - agregando array de numeros de filas y consultas realizadas
- * 27. ADDED Funcion saveSetConex (Guarda los datos y conecta. en euna sola línea)
-*/
+# Changelog
+
+Todos los cambios notables en el proyecto **xSQLART** serán documentados en este archivo.
+
+El formato está basado en [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [3.0.0] - 2026-05-03
+
+### ✨ Añadido
+- **Soporte Nativo para PHP 8.3:** Compatibilidad total con las nuevas restricciones de tipos y funcionalidades del motor PHP.
+- **Manejo de Excepciones:** Nuevo sistema de errores para facilitar el debugging en entornos de desarrollo.
+- **Tipado Estricto:** Implementación de mejores prácticas de tipado en los parámetros de los métodos principales.
+
+### 🚀 Mejorado
+- **Patrón Singleton:** Optimización de la instancia única para garantizar una conectividad más ligera y persistente.
+- **Rendimiento de Consultas:** Mejora en el procesamiento de resultados para reducir el consumo de memoria en consultas de gran escala.
+- **Documentación:** Actualización integral del README con ejemplos modernos y diccionario de funciones.
+
+### 🛠️ Cambiado
+- Refactorización del método `run()` para mayor seguridad en la inicialización de la conexión.
+- Actualización de los headers de seguridad en el método `MailSend()`.
+
+### 🗑️ Eliminado
+- Métodos obsoletos (deprecated) que causaban advertencias en versiones superiores a PHP 8.1.
+- Código redundante en los módulos de exportación de CSV y SQL.
+
+---
+
+## [2.0.0] - 2019-10-15
+
+### ✨ Añadido
+- Soporte para **PHP 7.x**.
+- Implementación de métodos rápidos de CRUD (`select`, `update`, `delete`).
+- Funciones de exportación a CSV y backups SQL.
+- Módulo de criptografía (SHA512).
+
+---
+
+## [1.0.0] - 2019-02-12
+
+### ✨ Añadido
+- Lanzamiento inicial de la librería.
+- Conector básico para MySQL.
+- Soporte para **PHP 5.6**.
+
+---
+
+<p align="center">
+  <b>Mantenido por Arturo Vásquez</b><br>
+  <i>AVFDigital - Soluciones de Sistemas</i>
+</p>
