@@ -1,93 +1,87 @@
-## 📜 Licencia (MIT)
-Copyright (c) 2019-2026 **Arturo Vásquez Soluciones de Sistemas / AVFDigital**
-
-Se concede permiso, de forma gratuita, a cualquier persona que obtenga una copia de este software para utilizarlo, modificarlo y distribuirlo sin restricciones, siempre que se incluya el aviso de copyright original.
-
----
-
-## 🤝 Soporte y Colaboración
-Si esta herramienta te ayuda a facturar más rápido o a mantener tus proyectos limpios, considera apoyar su desarrollo:
-
-[![Paypal Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/paypalme/avsolucionesweb)
-
----
+# <p align="center">🚀 xSQLART v3.0</p>
 <p align="center">
-  <b>Desarrollado porAquí tienes el contenido completo del **README.md** en un solo bloque de código, optimizado para GitHub, con un diseño moderno y las nuevas secciones técnicas que solicitaste:
-```markdown
-# 🚀 xSQLART v3.0 | PHP Database Wrapper
-### High-Performance MySQL Utility & Security Toolkit
+  <b>High-Performance MySQL Utility & Security Toolkit for PHP</b>
+</p>
 
-![PHP Version](https://img.shields.io/badge/PHP-5.6%20|%207.x%20|%208.3-8892bf?style=for-the-badge&logo=php)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
-![Maintained](https://img.shields.io/badge/Maintained%3F-Yes-007acc?style=for-the-badge)
+<p align="center">
+  <img src="https://img.shields.io/badge/PHP-8.3%20%2B-8892bf?style=for-the-badge&logo=php&logoColor=white" alt="PHP Version">
+  <img src="https://img.shields.io/badge/Version-3.0.0-007acc?style=for-the-badge&logo=github" alt="Software Version">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
+</p>
 
-**xSQLART** es una librería PHP diseñada para maximizar la productividad en el manejo de bases de datos MySQL. Bajo la filosofía de **"Haz más con menos"**, esta herramienta permite la reutilización de código mediante copiar y pegar, eliminando la necesidad de reescribir identificadores o variables complejas en cada proyecto.
+<p align="center">
+  <img src="https://img.shields.io/badge/Author-Arturo%20Vásquez-orange?style=flat-square&logo=visual-studio-code" alt="Author">
+  <img src="https://img.shields.io/badge/Status-Maintained-success?style=flat-square" alt="Maintenance">
+  <img src="https://img.shields.io/badge/Coverage-Secure-red?style=flat-square" alt="Security">
+</p>
 
 ---
 
-## 🛠️ Registro de Mejoras (v3.0 - 2026)
+### 📖 Descripción
+**xSQLART** es una librería premium diseñada para maximizar la productividad. Bajo la filosofía **"Haz más con menos"**, permite una integración inmediata mediante *copy-paste*, eliminando la fricción de configurar variables complejas en cada nuevo proyecto.
 
-Esta actualización representa un salto significativo en la estabilidad y modernización de la librería:
+---
 
-*   **Compatibilidad PHP 8.3:** Refactorización del núcleo para soportar las nuevas funcionalidades y restricciones de tipos de PHP 8.3.
-*   **Depuración de Código:** Se eliminaron métodos obsoletos y se corrigieron fugas de memoria en consultas de gran volumen.
-*   **Manejo de Excepciones:** Mejora en el sistema de errores para ofrecer logs más claros durante la etapa de desarrollo.
-*   **Optimización de Conectividad:** Mejora en la persistencia de la conexión mediante el patrón Singleton, reduciendo el consumo de recursos del servidor.
+## 🛠️ Registro de Mejoras ✨ `v3.0 - 2026`
+
+| Mejora | Descripción |
+| :--- | :--- |
+| 💎 **Core Modernizado** | Refactorización completa nativa para **PHP 8.3**. |
+| 🛡️ **Zero Leaks** | Depuración de memoria en consultas masivas y eliminación de métodos *deprecated*. |
+| 🚦 **Smart Logs** | Nuevo sistema de manejo de excepciones para debugging acelerado. |
+| ⚡ **Singleton Pro** | Conectividad persistente optimizada para reducir la carga en el servidor. |
 
 ---
 
 ## 📊 Diccionario de Funciones
+> *Clasificación por tipo de operación*
 
-La librería se divide en tres pilares fundamentales para el desarrollo backend:
+### 🧱 Core & Conectividad
+*   `getInstance()` ➜ **[Core]** Único punto de acceso (Singleton).
+*   `run()` ➜ **[DB]** Inicialización de conexión segura.
 
-| Función | Tipo | Descripción |
-| :--- | :--- | :--- |
-| `getInstance()` | **Core** | Implementa el patrón Singleton para una instancia única. |
-| `run()` | **Consultas DB** | Inicializa la conexión segura con los parámetros definidos. |
-| `select()` | **Consultas DB** | Abstracción para sentencias SELECT con soporte de arrays. |
-| `update()` | **Consultas DB** | Actualización de registros mediante mapeo de datos. |
-| `delete()` | **Consultas DB** | Eliminación simplificada de registros con cláusula WHERE. |
-| `Execute()` | **Consultas DB** | Ejecución de queries SQL personalizadas. |
-| `hashcad()` | **Cripto** | Generación de Hash SHA512 de alta seguridad. |
-| `hashcadalgo()` | **Cripto** | Generación de hashes seleccionando el algoritmo (MD5, SHA256, etc). |
-| `genHash()` | **Seguridad** | Creación de cadenas pseudoaleatorias para tokens o sales. |
-| `ExportarSQL()` | **Seguridad** | Backup integral de la estructura y datos de la DB. |
-| `ExportCSV()` | **Consultas DB** | Exportación rápida de resultados a formato plano. |
-| `MailSend()` | **Seguridad** | Envío de correos electrónicos con sanitización HTML. |
+### 🔍 Consultas DB (Fluent CRUD)
+*   🔵 `select(tabla, campos, where)` ➜ Lectura con mapeo automático.
+*   🟡 `update(tabla, data, where)` ➜ Actualización limpia.
+*   🔴 `delete(tabla, where)` ➜ Eliminación segura.
+*   ⚫ `Execute(query)` ➜ Consultas personalizadas a bajo nivel.
+*   📄 `ExportCSV(file, query)` ➜ Reportes inmediatos.
+
+### 🔐 Cripto & Seguridad
+*   🔑 `hashcad(string)` ➜ **SHA512** por defecto.
+*   🎲 `genHash(int)` ➜ Generador de tokens pseudoaleatorios.
+*   🔒 `hashcadalgo(str, algo)` ➜ Soporte multialgoritmo (MD5, SHA256).
+*   📦 `ExportarSQL(dbname)` ➜ Backup total de base de datos.
+*   📧 `MailSend(...)` ➜ Mailing con sanitización HTML.
 
 ---
 
 ## 🚀 Ejemplos de Implementación
 
-### 1. Conexión y Configuración
+### 🔌 1. Setup Maestro
 ```php
 define("SERVIDOR_BD", "127.0.0.1");
-define("NOMBRE_BD", "dbname");
-define("USUARIO_BD", "user");
-define("CLAVE_BD", "password");
+define("NOMBRE_BD", "db_system");
+define("USUARIO_BD", "admin");
+define("CLAVE_BD", "secret_key");
 
 include("xsqlart.class.php");
 
 $db = xsqlart::getInstance();
 $db->run();
 
+// SELECT: Obtener nombre de usuario con ID 5
+$db->select('usuarios', ['nombre'], ['id' => 5]);
 
-// SELECT con WHERE
-$db->select('usuarios', ['nombre', 'correo'], ['id' => 5]);
-
-// UPDATE
+// UPDATE: Cambiar tema a un usuario
 $db->update('config', ['tema' => 'dark'], ['usuario' => 'arturo']);
 
-// DELETE
-$db->delete('logs', ['fecha' => '2023-01-01']);
-
-// Generar un token de seguridad de 128 caracteres
-$token = $db->genHash(128);
-
-// Hashear una contraseña con SHA512
-$passwordSafe = $db->hashcad("user_password_123");
+// SECURITY: Generar un token de sesión
+$sessionToken = $db->genHash(128);
 
 ```
+
+---
 
 ## 📜 Licencia (MIT)
 **Copyright (c) 2019-2026 Arturo Vásquez Soluciones de Sistemas / AVFDigital**
@@ -96,16 +90,29 @@ Se concede permiso, de forma gratuita, a cualquier persona que obtenga una copia
 
 El aviso de copyright anterior y este aviso de permiso se incluirán en todas las copias o partes sustanciales del Software.
 
+EL SOFTWARE SE PROPORCIONA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O IMPLÍCITA, INCLUYENDO PERO NO LIMITADO A GARANTÍAS DE COMERCIALIZACIÓN, IDONEIDAD PARA UN PROPÓSITO PARTICULAR Y NO INFRACCIÓN. EN NINGÚN CASO LOS AUTORES O TITULARES DEL COPYRIGHT SERÁN RESPONSABLES DE NINGUNA RECLAMACIÓN, DAÑO U OTRA RESPONSABILIDAD, YA SEA EN UNA ACCIÓN DE CONTRATO, AGRAVIO O DE OTRO MODO, QUE SURJA DE, FUERA DE O EN CONEXIÓN CON EL SOFTWARE O EL USO U OTROS TRATOS EN EL SOFTWARE.
+
 ---
 
 ## 🤝 Soporte y Colaboración
-Si esta librería te ha sido de utilidad para agilizar tus desarrollos o mejorar tus proyectos, puedes apoyar su mantenimiento y la creación de nuevas herramientas mediante una donación:
 
-[![Paypal Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/paypalme/avsolucionesweb)
+Si esta herramienta te ha sido de utilidad para agilizar tus desarrollos, optimizar tus proyectos o simplemente te ha ahorrado valiosas horas de codificación, considera apoyar su mantenimiento y la creación de nuevas soluciones Open Source.
+
+Tu colaboración permite que este proyecto siga actualizado y compatible con las últimas versiones de PHP.
 
 ```html
+
+<p align="left">
+  <a href="https://www.paypal.com/paypalme/avsolucionesweb" target="_blank">
+    <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" alt="Donar con PayPal" />
+  </a>
+</p>
+
+---
+
 <p align="center">
   <b>Desarrollado por Arturo Vásquez</b><br>
   <i>Expert Web Development & System Solutions</i>
 </p>
+
 ```
