@@ -100,8 +100,6 @@ Si esta herramienta te ha sido de utilidad para agilizar tus desarrollos, optimi
 
 Tu colaboración permite que este proyecto siga actualizado y compatible con las últimas versiones de PHP.
 
-```html
-
 <p align="left">
   <a href="https://www.paypal.com/paypalme/avsolucionesweb" target="_blank">
     <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" alt="Donar con PayPal" />
@@ -114,5 +112,3 @@ Tu colaboración permite que este proyecto siga actualizado y compatible con las
   <b>Desarrollado por Arturo Vásquez</b><br>
   <i>Expert Web Development & System Solutions</i>
 </p>
-
-```
