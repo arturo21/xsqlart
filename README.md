@@ -1,3 +1,5 @@
+
+
 # <p align="center">🚀 xSQLART v3.0</p>
 <p align="center">
   <b>High-Performance MySQL Utility & Security Toolkit for PHP</b>
@@ -65,10 +67,14 @@ define("NOMBRE_BD", "db_system");
 define("USUARIO_BD", "admin");
 define("CLAVE_BD", "secret_key");
 
-include("xsqlart.class.php");
+require_once("xsqlart.class.php");
 
 $db = xsqlart::getInstance();
-$db->run();
+$db->setServer(SERVIDOR_BD);
+$db->setDB(NOMBRE_BD);
+$db->setUsuario(USUARIO_BD);
+$db->setClaveUsuario(CLAVE_BD);
+$db->setConex();
 
 // SELECT: Obtener nombre de usuario con ID 5
 $db->select('usuarios', ['nombre'], ['id' => 5]);
